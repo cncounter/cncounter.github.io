@@ -383,11 +383,42 @@
 		var text = node.text;
 		var tx = x_s + pad;
 		var ty = y_s + pad_top;
-		// 
+		//
+		var fontSize = 16;
+		var textAnchor = "start";
 		var textMaxLen = 10;
+		var lines = 1;
+		if(text.length > textMaxLen){
+			lines = 2;
+		}
+		//
+		// 如果缩放比例太小,则进行特殊处理
+		if(global.config.zoom_num >= global.config.zoom_num_emp){ // 补丁
+			//
+			textMaxLen = 6;
+			fontSize = 24;
+			tx = x_s + w/2;
+			ty = ty += h/2 - pad_top*4/5;
+			if(lines > 1){
+				ty -= pad_top*2/3;
+			}
+			textAnchor = "middle";
+		} else if(global.config.zoom_num >= global.config.zoom_num_dept){ // 补丁
+			//
+			textMaxLen = 8;
+			fontSize = 20;
+			tx = x_s + w/2;
+			ty = ty += h/2 - pad_top*3/2;
+			if(lines > 1){
+				ty -= pad_top/2;
+			}
+			textAnchor = "middle";
+		}
+		
 		if(text.length > textMaxLen){
 			text = text.substr(0, textMaxLen) + "\n" + text.substr(textMaxLen);
 			ty += pad_top/2;
+			lines = 2;
 		}
 		var nameText = paper.text(tx, ty, text);
 		//var nameText = paper.print(x_s + w/2, y_s + pad, text, font, 30);
@@ -397,8 +428,8 @@
 		nameText.attr({
 			"font-family": "microsoft yahei",
 			"font-weight": "bold",
-			"text-anchor": "start",
-			"font-size" : 16,
+			"text-anchor": textAnchor,
+			"font-size" : fontSize,
 			cursor : "default"
 		});
 		unselect(nameText);
