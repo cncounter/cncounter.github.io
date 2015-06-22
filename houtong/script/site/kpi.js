@@ -1038,7 +1038,6 @@
             		var zoom_num_emp = config.zoom_num_emp;
             		//
 					config.zoom_num = value;
-					debug(config.zoom_num, zoom_num_dept, zoom_num_emp);
             		// 触动阀值
             		if(old_value < zoom_num_dept && value >= zoom_num_dept){
 						return refreshKPITree();

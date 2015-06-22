@@ -132,10 +132,10 @@
 		function drawCursor(that){
 			//
 			// 修正 value
-			var v = that.size * (that.value / (that.maxvalue - that.minvalue));
+			var v = that.size * ((that.value - that.minvalue + 1) / (that.maxvalue - that.minvalue));
 			
 			var cx = that.x - that.padding;
-			var cy = that.y - that.padding;
+			var cy = that.y - that.padding + that.size2;
 			var cw = that.size2/2;
 			var ch = that.size2 + 2* that.padding;
 			
@@ -250,11 +250,11 @@
 		//
 		// 修正 value
 		//var v = this.size * (this.value / (this.maxvalue - this.minvalue));
-		var v = this.size * (this.value / (this.maxvalue));
+		var v = this.size * ((this.value- this.minvalue) / (this.maxvalue- this.minvalue));
 		
 		var cx = Math.round(this.x - this.csize*4/3);
 		//var cy = this.y - this.padding;
-		var cy = Math.round(this.y - this.csize*4/3);
+		var cy = Math.round(this.y - this.csize*2/3);
 		//
 		
 		// 判断
