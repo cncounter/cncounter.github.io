@@ -1672,7 +1672,8 @@ function requestAjax(url, data, successCallback, errorCallback){
 	var ajaxObject = {
 	    url: url,
 	    data: data,
-        type: "post",
+        //type: "post",
+        type : "get",
 	    success: function (message) {
 			if("object" === typeof message){}
 			else if(window["JSON"]){
