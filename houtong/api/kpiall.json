@@ -1,0 +1,280 @@
+{
+	"type": 1,
+	"id": "110101",
+	"name": "2015年厚通公司战略计划",
+	"deptid": "1",
+	"deptname": "厚通公司",
+	"userid": "",
+	"uname": "",
+	"uicon": "",
+	"updatetime": "2015-01-21",
+	"rate": 0,
+	"status": 1,
+	"children": [
+
+{
+	"type_note": "type=1,2,3,4;战略计划,战略主题,部门目标,员工业绩计划",
+	"status_note": "0标黄, 1标红, 2标蓝",
+	"type": 2,
+	"id": "11",
+	"name": "物资供应方管理",
+	"deptid": "110",
+	"deptname": "人力资源部",
+	"userid": "",
+	"uname": "",
+	"uicon": "",
+	"updatetime": "2015-06-21",
+	"rate": 30,
+	"status": 1,
+	"children": [
+		{
+			"type": 3,
+			"id": "1101",
+			"name": "公司物资管理体系建立与会计师对绿卡数据库的结算",
+			"deptid": "110",
+			"deptname": "人力资源部",
+			"userid": "",
+			"uname": "",
+			"uicon": "",
+			"updatetime": "2015-06-21",
+			"rate": 20,
+			"status": 2,
+			"children": [
+				{
+					"type": 4,
+					"id": "110101",
+					"name": "公司物资管理体系建立与会计师对绿卡数据库的结算",
+					"deptid": "110",
+					"deptname": "人力资源部",
+					"userid": "11010",
+					"uname": "李四",
+					"uicon": "./image/e_36.png",
+					"updatetime": "2015-01-21",
+					"rate": 40,
+					"status": 3,
+					"children": []
+				},
+				{
+					"type": 4,
+					"id": "110102",
+					"name": "年底完成制度文件编制",
+					"deptid": "110",
+					"deptname": "人力资源部",
+					"userid": "11010",
+					"uname": "李四",
+					"uicon": "./image/e_36.png",
+					"updatetime": "2015-06-21",
+					"rate": 80,
+					"status": 2,
+					"children": []
+				}
+			]
+		}, {
+			"type": 3,
+			"id": "1102",
+			"name": "建立集中采购管理体系",
+			"deptid": "110",
+			"deptname": "人力资源部",
+			"userid": "",
+			"uname": "",
+			"uicon": "",
+			"updatetime": "2015-06-21",
+			"rate": 30,
+			"status": 0,
+			"children": [
+				{
+					"type": 4,
+					"id": "110202",
+					"name": "年底完成制度文件编制",
+					"deptid": "110",
+					"deptname": "人力资源部",
+					"userid": "11020",
+					"uname": "小王",
+					"uicon": "./image/e_36.png",
+					"updatetime": "2015-06-21",
+					"rate": 30,
+					"status": 1,
+					"children": []
+				}
+			]
+		}, {
+			"type": 3,
+			"id": "1103",
+			"name": "假期剩余及废旧物资的管理",
+			"deptid": "110",
+			"deptname": "人力资源部",
+			"userid": "",
+			"uname": "",
+			"uicon": "",
+			"updatetime": "2015-06-20",
+			"rate": 30,
+			"status": 0,
+			"children": [
+				{
+					"type": 4,
+					"id": "110301",
+					"name": "加强剩余及废旧物资的管理",
+					"deptid": "110",
+					"deptname": "人力资源部",
+					"userid": "11020",
+					"uname": "小王",
+					"uicon": "./image/e_36.png",
+					"updatetime": "2015-03-20",
+					"rate": 50,
+					"status": 1,
+					"children": []
+				},
+				{
+					"type": 4,
+					"id": "110302",
+					"name": "年底完成剩余及废旧物资的管理制度",
+					"deptid": "110",
+					"deptname": "人力资源部",
+					"userid": "11020",
+					"uname": "小王",
+					"uicon": "./image/e_36.png",
+					"updatetime": "2015-06-20",
+					"rate": 30,
+					"status": 1,
+					"children": []
+				}
+			]
+		}
+	]
+}
+
+,
+{
+	"type_note": "type=1,2,3,4;战略计划,战略主题,部门目标,员工业绩计划",
+	"status_note": "0标黄, 1标红, 2标蓝",
+	"type": 2,
+	"id": "11",
+	"name": "物资供应方管理",
+	"deptid": "110",
+	"deptname": "人力资源部",
+	"userid": "",
+	"uname": "",
+	"uicon": "",
+	"updatetime": "2015-06-21",
+	"rate": 30,
+	"status": 1,
+	"children": [
+		{
+			"type": 3,
+			"id": "1101",
+			"name": "公司物资管理体系建立与会计师对绿卡数据库的结算",
+			"deptid": "110",
+			"deptname": "人力资源部",
+			"userid": "",
+			"uname": "",
+			"uicon": "",
+			"updatetime": "2015-06-21",
+			"rate": 20,
+			"status": 2,
+			"children": [
+				{
+					"type": 4,
+					"id": "110101",
+					"name": "公司物资管理体系建立与会计师对绿卡数据库的结算",
+					"deptid": "110",
+					"deptname": "人力资源部",
+					"userid": "11010",
+					"uname": "李四",
+					"uicon": "./image/e_36.png",
+					"updatetime": "2015-01-21",
+					"rate": 40,
+					"status": 3,
+					"children": []
+				},
+				{
+					"type": 4,
+					"id": "110102",
+					"name": "年底完成制度文件编制",
+					"deptid": "110",
+					"deptname": "人力资源部",
+					"userid": "11010",
+					"uname": "李四",
+					"uicon": "./image/e_36.png",
+					"updatetime": "2015-06-21",
+					"rate": 80,
+					"status": 2,
+					"children": []
+				}
+			]
+		}, {
+			"type": 3,
+			"id": "1102",
+			"name": "建立集中采购管理体系",
+			"deptid": "110",
+			"deptname": "人力资源部",
+			"userid": "",
+			"uname": "",
+			"uicon": "",
+			"updatetime": "2015-06-21",
+			"rate": 30,
+			"status": 0,
+			"children": [
+				{
+					"type": 4,
+					"id": "110202",
+					"name": "年底完成制度文件编制",
+					"deptid": "110",
+					"deptname": "人力资源部",
+					"userid": "11020",
+					"uname": "小王",
+					"uicon": "./image/e_36.png",
+					"updatetime": "2015-06-21",
+					"rate": 30,
+					"status": 1,
+					"children": []
+				}
+			]
+		}, {
+			"type": 3,
+			"id": "1103",
+			"name": "假期剩余及废旧物资的管理",
+			"deptid": "110",
+			"deptname": "人力资源部",
+			"userid": "",
+			"uname": "",
+			"uicon": "",
+			"updatetime": "2015-06-20",
+			"rate": 30,
+			"status": 0,
+			"children": [
+				{
+					"type": 4,
+					"id": "110301",
+					"name": "加强剩余及废旧物资的管理",
+					"deptid": "110",
+					"deptname": "人力资源部",
+					"userid": "11020",
+					"uname": "小王",
+					"uicon": "./image/e_36.png",
+					"updatetime": "2015-03-20",
+					"rate": 50,
+					"status": 1,
+					"children": []
+				},
+				{
+					"type": 4,
+					"id": "110302",
+					"name": "年底完成剩余及废旧物资的管理制度",
+					"deptid": "110",
+					"deptname": "人力资源部",
+					"userid": "11020",
+					"uname": "小王",
+					"uicon": "./image/e_36.png",
+					"updatetime": "2015-06-20",
+					"rate": 30,
+					"status": 1,
+					"children": []
+				}
+			]
+		}
+	]
+}
+
+
+	]
+}

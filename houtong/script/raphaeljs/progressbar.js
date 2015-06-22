@@ -249,7 +249,8 @@
 	ProgressBar.prototype.refreshCursor = function() {
 		//
 		// 修正 value
-		var v = this.size * (this.value / (this.maxvalue - this.minvalue));
+		//var v = this.size * (this.value / (this.maxvalue - this.minvalue));
+		var v = this.size * (this.value / (this.maxvalue));
 		
 		var cx = Math.round(this.x - this.csize*4/3);
 		//var cy = this.y - this.padding;

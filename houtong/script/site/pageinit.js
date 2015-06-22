@@ -1,16 +1,14 @@
 // 使用闭包
 (function() {
 	//
-	//window.onload = pageInit;
 	$(pageInit);
-	//
-	var debug = window["debug"] || function (){};
 	// 
 	var __config = {
 		_note_info : "默认配置信息,这堆配置信息,可以通过后台配置来覆盖",
 		width_dept : 200, // 宽
 		height_dept : 110,
 		padding_dept : 12,
+		padding_dept_top : 20,
 		radius_dept : 10,
 		margin_parent : 45, // 间距
 		margin_partner : 28,
@@ -22,6 +20,8 @@
 		//
 		direction : 0, //拓扑方向. 0为从左到右, 1为从上到下
 		zoom_num : 10, // 缩放倍数,小数. 数字越小则距离屏幕前的你越近,显示越大
+		zoom_num_dept : 14, //不显示部门和负责人的阀值(含)
+		zoom_num_emp : 17, // 不显示经理和职员的阀值(含)
 		expand_level : 2, // 展开级别,展开全部,则设置为100即可
 		expand_all : 0,	  // 展开所有
 		show_mgr_title : 1, // 显示部门经理title
@@ -265,6 +265,7 @@
 		var h = node.height || global.config.height_dept;
 		var r = global.config.radius_dept;
 		var pad = global.config.padding_dept;
+		var pad_top = global.config.padding_dept_top;
 		var direction = global.config.direction;
 		
 		//
@@ -286,6 +287,10 @@
 			"fill-opacity" : 0.3,
 			"stroke-width" : 2
 		});
+		//
+		node.rect = rect;
+		
+		// 绘制展开/收缩按钮
 		
 		// expand_level
 		// expand_status
@@ -374,10 +379,43 @@
 		// 2. 绘制部门信息
 		var text = node.text;
 		var tx = x_s + pad;
-		var ty = y_s + pad;
-		if(text.length > 8){
-			text = text.substr(0,8) + "\n" + text.substr(8);
-			ty += pad;
+		var ty = y_s + pad_top;
+		//
+		var fontSize = 16;
+		var textAnchor = "start";
+		var textMaxLen = 10;
+		var lines = 1;
+		if(text.length > textMaxLen){
+			lines = 2;
+		}
+		//
+		// 如果缩放比例太小,则进行特殊处理
+		if(global.config.zoom_num >= global.config.zoom_num_emp){ // 补丁
+			//
+			textMaxLen = 6;
+			fontSize = 24;
+			tx = x_s + w/2;
+			ty = ty += h/2 - pad_top*4/5;
+			if(lines > 1){
+				ty -= pad_top*2/3;
+			}
+			textAnchor = "middle";
+		} else if(global.config.zoom_num >= global.config.zoom_num_dept){ // 补丁
+			//
+			textMaxLen = 8;
+			fontSize = 20;
+			tx = x_s + w/2;
+			ty = ty += h/2 - pad_top*3/2;
+			if(lines > 1){
+				ty -= pad_top/2;
+			}
+			textAnchor = "middle";
+		}
+		
+		if(text.length > textMaxLen){
+			text = text.substr(0, textMaxLen) + "\n" + text.substr(textMaxLen);
+			ty += pad_top/2;
+			lines = 2;
 		}
 		var nameText = paper.text(tx, ty, text);
 		//var nameText = paper.print(x_s + w/2, y_s + pad, text, font, 30);
@@ -387,11 +425,12 @@
 		nameText.attr({
 			"font-family": "microsoft yahei",
 			"font-weight": "bold",
-			"text-anchor": "start",
-			"font-size" : 16,
+			"text-anchor": textAnchor,
+			"font-size" : fontSize,
 			cursor : "default"
 		});
 		unselect(nameText);
+		node.nameText = nameText;
 		
 		// 3. 绘制部门经理
 		//
@@ -420,8 +459,7 @@
 		var linkx = x_s + w/2;
 		var linky = y_s + h/2 + pad/2;
 		// 如果缩放比例太小,则不显示
-		//
-		if(global.config.zoom_num > 6){
+		if(global.config.zoom_num < global.config.zoom_num_dept){
 			
 			var linkText = paper.text(linkx, linky , linkinfo);
 			linkText.dblclick(dbclickHandler);
@@ -433,6 +471,15 @@
 			});
 			unselect(linkText);
 		}
+		
+		// !!!! 注意, 因为绘制职员图标在此函数的最后面,所以不显示时,直接return了。否则，需要包含在else里面。
+		//
+		// 如果缩放比例太小,则不显示
+		if(global.config.zoom_num >= global.config.zoom_num_emp){
+			//
+			return node;
+		}
+		
 		
 		// 4. 职位图标 
 		var msrc = global.config.mgr_src;
@@ -565,11 +612,6 @@
 			}
 		};
 		pcEle.click(pcTipsClick);
-		// 绘制展开/收缩按钮
-		
-		//
-		node.rect = rect;
-		node.nameText = nameText;
 		//
 		return node;
 	};
@@ -865,9 +907,9 @@
 		
 		//
 		// 6. 重置一些值
-    	global.config.prevposition=null;
-    	global.config.downposition=null;
-    	global.config.offset = {x: 0, y:0};
+    	//global.config.prevposition=null;
+    	//global.config.downposition=null;
+    	//global.config.offset = {x: 0, y:0};
     	//
 		//
 		// 这是设置基础形状,需要进行封装
@@ -955,16 +997,35 @@
         //
         var $holder1 = $("#holder1");
         var pos = $holder1.offset();
+        var value = global.config.zoom_num;
         var config = {
             	x : 10
             	, y : 30
-            	, value : 10
+            	, value : value
             	, vertical : 1
             	, color : "#6fdeee"
             	, element : holder1
             	, fixsize : pos
             	, onchange : function(value){
+            		//
+            		var old_value = global.config.zoom_num;
+            		var zoom_num_dept = global.config.zoom_num_dept;
+            		var zoom_num_emp = global.config.zoom_num_emp;
+            		//
 					global.config.zoom_num = value;
+            		// 触动阀值
+            		if(old_value < zoom_num_dept && value >= zoom_num_dept){
+						return refreshDeptTree();
+            		} else if(old_value >= zoom_num_dept && value < zoom_num_dept){
+						return refreshDeptTree();
+            		}
+            		// 触动阀值
+            		if(old_value < zoom_num_emp && value >= zoom_num_emp){
+						return refreshDeptTree();
+            		} else if(old_value >= zoom_num_emp && value < zoom_num_emp){
+						return refreshDeptTree();
+            		}
+            		// 普通情况
 					refreshPaperZoom();
           		}
         };
@@ -1282,7 +1343,6 @@
         	}
 			//
 			var paper = global.paper;
-			var zoomNum = global.config.zoom_num;
 			//
 			var width = paper.width;
 			var height = paper.height;
