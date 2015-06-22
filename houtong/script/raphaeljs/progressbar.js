@@ -132,7 +132,7 @@
 		function drawCursor(that){
 			//
 			// 修正 value
-			var v = that.size * ((that.value - that.minvalue + 1) / (that.maxvalue - that.minvalue));
+			var v = that.size * ((that.value - that.minvalue) / (that.maxvalue - that.minvalue));
 			
 			var cx = that.x - that.padding;
 			var cy = that.y - that.padding + that.size2;
@@ -163,6 +163,8 @@
 				opacity : 1,
 				"stroke-width" : that.clinew
 			}));
+			
+			that.refreshCursor();
 		};
 	
 	
@@ -256,6 +258,11 @@
 		//var cy = this.y - this.padding;
 		var cy = Math.round(this.y - this.csize*2/3);
 		//
+		var that = this;
+			//var cx = that.x - that.padding;
+			//var cy = that.y - that.padding + that.size2;
+			//var cw = that.size2/2;
+			//var ch = that.size2 + 2* that.padding;
 		
 		// 判断
 		var attrdd = {};
