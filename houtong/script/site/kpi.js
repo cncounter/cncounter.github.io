@@ -19,8 +19,8 @@
 		offset : {x: 0, y:0},
 		//
 		zoom_num : 10, // 缩放倍数,小数. 数字越小则距离屏幕前的你越近,显示越大
-		zoom_num_dept : 16, //不显示部门和负责人的阀值(含)
-		zoom_num_emp : 18, // 不显示经理和职员的阀值(含)
+		zoom_num_dept : 13, //不显示部门和负责人的阀值(含)
+		zoom_num_emp : 14, // 不显示经理和职员的阀值(含)
 		expand_level : 2, // 展开级别,展开全部,则设置为100即可
 		expand_all : 0,	  // 展开所有
 		show_mgr_title : 1, // 显示部门经理title
@@ -201,6 +201,9 @@
 		var r = config.radius_dept;
 		var pad = config.padding_dept;
 		var pad_top = config.padding_dept_top;
+		var zoom_num = config.zoom_num;
+		var zoom_num_dept = config.zoom_num_dept;
+		var zoom_num_emp = config.zoom_num_emp;
 		//
 		var color = Raphael.color(config.color);
 		
@@ -211,14 +214,67 @@
 		var y_e = y_s + h;
 		
 		var type = node.type;
-		//
+		// type=1,2,3,4;战略计划,战略主题,部门目标,员工业绩计划
 		var type_Strategy = 1;
 		var type_Subject = 2;
 		var type_Goal = 3;
 		var type_Plan = 4;
 		
-		//
+		// 绘制矩形框
 		_drawRect();
+		// 1.1 绘制下方的展开状态图标
+		_drawExpIcon();
+		// 绘制查看按钮
+		if(type_Strategy != type){
+			if(zoom_num >= zoom_num_emp){
+				// 不绘制
+			} else {
+				_drawLookInfo();
+			}
+		}
+		// 都需要绘制节点Title
+		_drawTitletext();
+		// 绘制用户姓名图标
+		if(type_Plan == type){
+			_drawUserNameIcon();
+		}
+		// 绘制状态图标
+		if(type_Goal == type || type_Plan == type){
+			if(zoom_num >= zoom_num_dept){
+				// 不绘制
+			} else {
+				_drawStatusIcon();
+			}
+		}
+		//绘制进度信息
+		if(type_Goal == type || type_Plan == type){
+			if(zoom_num >= zoom_num_dept){
+				// 不绘制
+			} else {
+				_drawRateInfo();
+			}
+		}
+		// 绘制更新时间
+		if(type_Goal == type || type_Plan == type){
+			if(zoom_num >= zoom_num_dept){
+				// 不绘制
+			} else {
+				_drawUpdateTime();
+			}
+		}
+		// 绘制部门name
+		if(type_Goal == type || type_Subject == type){
+			if(zoom_num >= zoom_num_emp){
+				// 不绘制
+			} else {
+				_drawDeptnameText();
+			}
+		}
+		// 绘制逻辑执行完成
+		return node;
+		
+		// 下面是闭包函数,通过上方的代码调用执行.
+		
 		// 绘制矩形框
 		function _drawRect(){
 			// 1. 绘制矩形框
@@ -233,8 +289,6 @@
 			node.rect = rect;
 		};
 		
-		//
-		_drawExpIcon();
 		// 1.1 绘制下方的展开状态图标
 		function _drawExpIcon(){
 			// expand_level
@@ -316,11 +370,7 @@
 			
 		};
 		
-		
-		if(type_Strategy != type){
-			_drawLookInfo();
-		}
-		//
+		// 绘制查看按钮
 		function _drawLookInfo(){
 			var lookinfo = "查看";
 			//
@@ -352,7 +402,6 @@
 		};
 		
 		// 都需要绘制节点Title
-		_drawTitletext();
 		function _drawTitletext(){
 			// 计算title节点的x,y
 			var tx = x_s + pad;
@@ -371,41 +420,76 @@
 			}
 			if(type_Plan == type){
 				ty += pad_top + 4;
-			} 
-			//
-			if(type_Plan != type && type_Goal != type){
-				// 如果缩放比例太小,则进行特殊处理
-				if(global.config.zoom_num >= global.config.zoom_num_emp){ // 补丁
+			}
+			
+			// type=4, 个人计划 TODO
+			if(type_Plan == type){
+				if(zoom_num >= zoom_num_dept){
 					//
-					textMaxLen = 6;
-					fontSize = 24;
 					tx = x_s + w/2;
-					ty = ty += h/2 - pad_top*4/5;
-					if(lines > 1){
-						ty -= pad_top*2/3;
-					}
-					textAnchor = "middle";
-				} else if(global.config.zoom_num >= global.config.zoom_num_dept){ // 补丁
-					//
-					textMaxLen = 8;
-					fontSize = 20;
-					tx = x_s + w/2;
-					ty = ty += h/2 - pad_top*3/2;
+					ty = y_s + h/2;
 					if(lines > 1){
 						ty -= pad_top/2;
 					}
+					fontSize = 18;
 					textAnchor = "middle";
+					textMaxLen = 12;
+				}
+				if(zoom_num >= zoom_num_emp){
+					ty = y_s + h/2 + pad_top/3;
+					textMaxLen = 12;
+					fontSize = 20;
 				}
 			}
 			
+			// type=3, 部门目标
+			if(type_Goal == type){
+				if(zoom_num >= zoom_num_dept){
+					//
+					tx = x_s + w/2;
+					ty = y_s + h/2 - pad_top*3/2;
+					if(lines > 1){
+						ty -= pad_top/2;
+					}
+					fontSize = 18;
+					textAnchor = "middle";
+					textMaxLen = 12;
+				}
+				if(zoom_num >= zoom_num_emp){
+					ty = y_s + h/2;
+					textMaxLen = 12;
+					fontSize = 20;
+				}
+			}
 			
-			// title节点
+			// type=2,战略主题
+			if(type_Subject == type){
+				
+				if(zoom_num >= zoom_num_dept){
+					//
+					tx = x_s + w/2;
+					ty = y_s + h/2 - pad_top*3/2;
+					if(lines > 1){
+						ty -= pad_top/2;
+					}
+					fontSize = 20;
+					textAnchor = "middle";
+					textMaxLen = 12;
+				}
+				if(zoom_num >= zoom_num_emp){
+					ty = y_s + h/2;
+					textMaxLen = 12;
+					fontSize = 24;
+				}
+			}
+			
+			// type=1,公司年度战略计划,强制处理
 			if(type_Strategy == type){
 				// 强制居中
 				ty = y_s + h/2;
 				textAnchor = "start";
-				textMaxLen = 16;
-				fontSize = 16;
+				textMaxLen = 10;
+				fontSize = 22;
 			}
 			
 			if(text.length > textMaxLen){
@@ -429,10 +513,6 @@
 			// 
 		};
 		
-		// 绘制用户姓名图标
-		if(type_Plan == type){
-			_drawUserNameIcon();
-		}
 		// 闭包函数,绘制用户姓名和图标
 		function _drawUserNameIcon(){
 			//
@@ -471,10 +551,7 @@
 			unselect(dotText);
 		};
 		
-		// 绘制状态图标
-		if(type_Goal == type || type_Plan == type){
-			_drawStatusIcon();
-		}
+
 		// 闭包函数,绘制状态标记
 		function _drawStatusIcon(){
 			//
@@ -499,10 +576,7 @@
 				,cursor : "pointer"
 			});
 		};
-		
-		if(type_Goal == type || type_Plan == type){
-			_drawRateInfo();
-		}
+
 		// 闭包函数,绘制进度信息
 		function _drawRateInfo(){
 			//
@@ -549,10 +623,7 @@
 			unselect(jindu2Text);
 		
 		};
-		
-		if(type_Goal == type || type_Plan == type){
-			_drawUpdateTime();
-		}
+
 		// 闭包函数,绘制更新时间
 		function _drawUpdateTime(){
 			//
@@ -581,10 +652,6 @@
 			unselect(updatetimeText);
 		};
 		
-		//
-		if(type_Goal == type || type_Subject == type){
-			_drawDeptnameText();
-		}
 		// 闭包函数,绘制部门name
 		function _drawDeptnameText(){
 			//
@@ -612,8 +679,7 @@
 			deptnameText.datanode = node;
 			unselect(deptnameText);
 		};
-		//
-		return node;
+
 	};
 	
 	
@@ -1024,8 +1090,8 @@
             	x : 10
             	, y : 30
             	, value : value
-				, minvalue : 3
-				, maxvalue : 15
+				, minvalue : 2
+				, maxvalue : 18
             	, vertical : 1
             	, color : "#6fdeee"
             	, element : holder1
