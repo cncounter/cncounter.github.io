@@ -236,7 +236,11 @@
 		_drawTitletext();
 		// 绘制用户姓名图标
 		if(type_Plan == type){
-			_drawUserNameIcon();
+			if(zoom_num >= zoom_num_dept){
+				// 不绘制
+			} else {
+				_drawUserNameIcon();
+			}
 		}
 		// 绘制状态图标
 		if(type_Goal == type || type_Plan == type){
