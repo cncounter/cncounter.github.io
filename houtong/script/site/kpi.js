@@ -236,7 +236,7 @@
 		_drawTitletext();
 		// 绘制用户姓名图标
 		if(type_Plan == type){
-			if(zoom_num >= zoom_num_dept){
+			if(zoom_num >= zoom_num_emp){
 				// 不绘制
 			} else {
 				_drawUserNameIcon();
