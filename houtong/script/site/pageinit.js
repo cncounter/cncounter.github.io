@@ -28,6 +28,8 @@
 		show_mgr_name : 1, // 显示部门经理 name
 		mgr_src : "./image/m_36.png",
 		emp_src : "./image/e_36.png",
+		exp_c_src : "./image/expand_c.png",
+		exp_x_src : "./image/expand_x.png",
 		mgr_emp_size : 18,
 		min_paper_width : 800,
 		min_paper_height : 600,
@@ -317,8 +319,21 @@
 			var exp_x = pRight.x;
 			var exp_y = pRight.y;
 		}
+		
+		//
+		var exp_w = 16;
+		var exp_h = 16;
+		exp_x -= exp_w/2;
+		exp_y -= exp_h/2;
+		
+		var expsrc = global.config.exp_c_src;
+		if(2 == expand_status){
+			expsrc = global.config.exp_x_src;
+		}
+		/**
+		 *
 		//exp_radius
-		var exp_radius = global.config.exp_radius;
+		var exp_radius = global.config.exp_radius; 
 		var charExp = "";
 		if(1 == expand_status){
 			// 展开状态, -号
@@ -327,8 +342,13 @@
 			// 收缩状态, +号
 			var charExp = "+";
 		}
+		*/
 		//
 		if(1 == expand_status || 2 == expand_status){
+			
+			var exp_image = paper.image(expsrc, exp_x, exp_y, exp_w, exp_h);
+			iconcursor(exp_image);
+			/**
 			// 绘制展开状态/收缩状态, +号
 			var exp_circle = paper.circle(exp_x, exp_y, exp_radius);
 			var exp_char = paper.text(exp_x, exp_y, charExp);
@@ -340,10 +360,12 @@
 				"font-size": 18
 			});
 			unselect(exp_char);
+			*/
 		} else {
 			// 不绘制. 0
 		}
 		//
+		/**
 		exp_circle && exp_circle.attr({
 			fill : "#eee"
 			,stroke : color
@@ -353,6 +375,7 @@
 			stroke : color
 			,cursor : "pointer"
 		});
+		*/
 		// 绑定展开事件
 		function exp_handler(e, data){
 			// treenode
@@ -370,8 +393,9 @@
 			refreshDeptTree();
 		}
 		//
-		exp_circle && exp_circle.click(exp_handler);
-		exp_char && exp_char.click(exp_handler);
+		exp_image && exp_image.click(exp_handler);
+		//exp_circle && exp_circle.click(exp_handler);
+		//exp_char && exp_char.click(exp_handler);
 		
 		
 		// 设置字体
