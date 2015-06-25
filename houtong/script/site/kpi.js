@@ -21,7 +21,7 @@
 		zoom_num : 10, // 缩放倍数,小数. 数字越小则距离屏幕前的你越近,显示越大
 		zoom_num_dept : 13, //不显示部门和负责人的阀值(含)
 		zoom_num_emp : 14, // 不显示经理和职员的阀值(含)
-		expand_level : 2, // 展开级别,展开全部,则设置为100即可
+		expand_level : 3, // 展开级别,展开全部,则设置为100即可
 		expand_all : 0,	  // 展开所有
 		show_mgr_title : 1, // 显示部门经理title
 		show_mgr_name : 1, // 显示部门经理 name
@@ -49,10 +49,11 @@
 			debug(node);
 		},
 		//
+		show_root  : 0,   // 是否显示根元素
 		orginfo_json_url : 'api/orginfo.json',
-		kpiinfo_json_url : 'api/kpiinfo.json',
-		kpiall_json_url : 'api/kpiall.json'
-		//kpiinfo_json_url : 'api/kpiall.json' // 请切换了试试
+		//kpiinfo_json_url : 'api/kpiinfo.json',
+		//kpiall_json_url : 'api/kpiall.json'
+		kpiinfo_json_url : 'api/kpiall.json' // 请切换了试试
 	};
 	//
 	var global = {
@@ -147,8 +148,12 @@
 	// 绘制KPI节点树
 	function drawKPINodeTree(paper, tree_with_xy, expand_level){
 		//
-		//
-		var curnode = drawKPINode(paper, tree_with_xy);
+		// 如果传入此参数
+		if(expand_level && !global.config.show_root){
+			// 不绘制根节点
+		} else {
+			var curnode = drawKPINode(paper, tree_with_xy);
+		}
 		//
 		// 遍历,挨个绘制
 		var subnodes = tree_with_xy.subnodes;
@@ -158,8 +163,13 @@
 			drawKPINodeTree(paper, node);
 		}
 		//
-		// 设置连线
-		drawKPINodeConnectLine(paper, tree_with_xy);
+		// 如果传入此参数
+		if(expand_level && !global.config.show_root){
+			// 不绘制根节点的线
+		} else {
+			// 设置连线
+			drawKPINodeConnectLine(paper, tree_with_xy);
+		}
 		//
 		return tree_with_xy;
 	};
@@ -748,9 +758,6 @@
 			// 迭代遍历, 如果还有子元素,则遍历子元素
 			paper.connectElement(pnode.rect, snode.rect, config, config.line_color)
 		}
-		if(pnode.tempemp){
-			paper.connectElement(pnode.rect, pnode.tempemp, config, config.line_color)
-		}
 	};
 
 	
@@ -986,6 +993,12 @@
 		
 		//
 		dx = 0; // 强制不使用计算值
+		
+		if(!config.show_root){
+			// 修正一下位置
+			dx += global.config.width_dept;
+		}
+		
 		//
 		var dxdy = {
 			dx: dx
@@ -1160,6 +1173,7 @@
 		var $export_image = $("#btn_export_image");
 		var $btn_direction_toggle = $("#btn_direction_toggle");
 		var $checkbox_expand_all = $("#checkbox_expand_all");
+		var $checkbox_show_stratagy = $("#checkbox_show_stratagy");
 		var $btn_fullscreen = $("#btn_fullscreen");
 		var $btn_deptshow = $("#btn_deptshow");
 		var $btn_save_showconfig = $("#btn_save_showconfig");
@@ -1185,6 +1199,21 @@
 			var checked = $checkbox_expand_all.attr('checked') || $checkbox_expand_all.prop("checked");
 			//
 			expandAllNodeStatus(checked);
+			// 刷新部门树 ...
+			refreshKPITree();
+		}); 
+		//
+		$checkbox_show_stratagy.click(function() {
+			//
+			var checked = $checkbox_show_stratagy.attr('checked') || $checkbox_show_stratagy.prop("checked");
+			//
+			if(checked){
+				global.config.show_root = 1;
+				global.config.expand_level = 2;
+			} else {
+				global.config.show_root = 0;
+				global.config.expand_level = 3;
+			}
 			// 刷新部门树 ...
 			refreshKPITree();
 		}); 
