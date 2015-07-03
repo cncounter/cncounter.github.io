@@ -196,5 +196,479 @@
 				}
 			]
 		}
+		, {
+			"orgid": "200",
+			"text": "北京厚通益和科技有限公司",
+			"linktitle": "总经理",
+			"linkman": "X总",
+			"snorder": 200,
+			"empnum": 10,
+			"state": {
+				"opened": 0,
+				"selected": 0
+			},
+			"children": [
+				{
+					"orgid": "210",
+					"text": "人力资源部",
+					"linktitle": "人力经理",
+					"linkman": "X经理",
+					"snorder": 210,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "220",
+					"text": "财务核算中心",
+					"linktitle": "财务总监",
+					"linkman": "X总监",
+					"snorder": 220,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "230",
+					"text": "研发中心",
+					"linktitle": "研发经理",
+					"linkman": "X经理",
+					"snorder": 230,
+					"empnum": 6,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "230",
+					"text": "销售中心",
+					"linktitle": "销售总监",
+					"linkman": "X总监",
+					"snorder": 230,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "230",
+					"text": "服务中心",
+					"linktitle": "服务经理",
+					"linkman": "X经理",
+					"snorder": 230,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+			]
+		}
+		, {
+			"orgid": "200",
+			"text": "北京厚通益和科技有限公司",
+			"linktitle": "总经理",
+			"linkman": "X总",
+			"snorder": 200,
+			"empnum": 10,
+			"state": {
+				"opened": 0,
+				"selected": 0
+			},
+			"children": [
+				{
+					"orgid": "210",
+					"text": "人力资源部",
+					"linktitle": "人力经理",
+					"linkman": "X经理",
+					"snorder": 210,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "220",
+					"text": "财务核算中心",
+					"linktitle": "财务总监",
+					"linkman": "X总监",
+					"snorder": 220,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "230",
+					"text": "研发中心",
+					"linktitle": "研发经理",
+					"linkman": "X经理",
+					"snorder": 230,
+					"empnum": 6,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "230",
+					"text": "销售中心",
+					"linktitle": "销售总监",
+					"linkman": "X总监",
+					"snorder": 230,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "230",
+					"text": "服务中心",
+					"linktitle": "服务经理",
+					"linkman": "X经理",
+					"snorder": 230,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+			]
+		}
+		, {
+			"orgid": "200",
+			"text": "北京厚通益和科技有限公司",
+			"linktitle": "总经理",
+			"linkman": "X总",
+			"snorder": 200,
+			"empnum": 10,
+			"state": {
+				"opened": 0,
+				"selected": 0
+			},
+			"children": [
+				{
+					"orgid": "210",
+					"text": "人力资源部",
+					"linktitle": "人力经理",
+					"linkman": "X经理",
+					"snorder": 210,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "220",
+					"text": "财务核算中心",
+					"linktitle": "财务总监",
+					"linkman": "X总监",
+					"snorder": 220,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "230",
+					"text": "研发中心",
+					"linktitle": "研发经理",
+					"linkman": "X经理",
+					"snorder": 230,
+					"empnum": 6,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "230",
+					"text": "销售中心",
+					"linktitle": "销售总监",
+					"linkman": "X总监",
+					"snorder": 230,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "230",
+					"text": "服务中心",
+					"linktitle": "服务经理",
+					"linkman": "X经理",
+					"snorder": 230,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+			]
+		}
+		, {
+			"orgid": "200",
+			"text": "北京厚通益和科技有限公司",
+			"linktitle": "总经理",
+			"linkman": "X总",
+			"snorder": 200,
+			"empnum": 10,
+			"state": {
+				"opened": 0,
+				"selected": 0
+			},
+			"children": [
+				{
+					"orgid": "210",
+					"text": "人力资源部",
+					"linktitle": "人力经理",
+					"linkman": "X经理",
+					"snorder": 210,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "220",
+					"text": "财务核算中心",
+					"linktitle": "财务总监",
+					"linkman": "X总监",
+					"snorder": 220,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "230",
+					"text": "研发中心",
+					"linktitle": "研发经理",
+					"linkman": "X经理",
+					"snorder": 230,
+					"empnum": 6,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "230",
+					"text": "销售中心",
+					"linktitle": "销售总监",
+					"linkman": "X总监",
+					"snorder": 230,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "230",
+					"text": "服务中心",
+					"linktitle": "服务经理",
+					"linkman": "X经理",
+					"snorder": 230,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+			]
+		}
+		, {
+			"orgid": "200",
+			"text": "北京厚通益和科技有限公司",
+			"linktitle": "总经理",
+			"linkman": "X总",
+			"snorder": 200,
+			"empnum": 10,
+			"state": {
+				"opened": 0,
+				"selected": 0
+			},
+			"children": [
+				{
+					"orgid": "210",
+					"text": "人力资源部",
+					"linktitle": "人力经理",
+					"linkman": "X经理",
+					"snorder": 210,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "220",
+					"text": "财务核算中心",
+					"linktitle": "财务总监",
+					"linkman": "X总监",
+					"snorder": 220,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "230",
+					"text": "研发中心",
+					"linktitle": "研发经理",
+					"linkman": "X经理",
+					"snorder": 230,
+					"empnum": 6,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "230",
+					"text": "销售中心",
+					"linktitle": "销售总监",
+					"linkman": "X总监",
+					"snorder": 230,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "230",
+					"text": "服务中心",
+					"linktitle": "服务经理",
+					"linkman": "X经理",
+					"snorder": 230,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+			]
+		}
+		, {
+			"orgid": "200",
+			"text": "北京厚通益和科技有限公司",
+			"linktitle": "总经理",
+			"linkman": "X总",
+			"snorder": 200,
+			"empnum": 10,
+			"state": {
+				"opened": 0,
+				"selected": 0
+			},
+			"children": [
+				{
+					"orgid": "210",
+					"text": "人力资源部",
+					"linktitle": "人力经理",
+					"linkman": "X经理",
+					"snorder": 210,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "220",
+					"text": "财务核算中心",
+					"linktitle": "财务总监",
+					"linkman": "X总监",
+					"snorder": 220,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "230",
+					"text": "研发中心",
+					"linktitle": "研发经理",
+					"linkman": "X经理",
+					"snorder": 230,
+					"empnum": 6,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "230",
+					"text": "销售中心",
+					"linktitle": "销售总监",
+					"linkman": "X总监",
+					"snorder": 230,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+				, {
+					"orgid": "230",
+					"text": "服务中心",
+					"linktitle": "服务经理",
+					"linkman": "X经理",
+					"snorder": 230,
+					"empnum": 2,
+					"state": {
+						"opened": 0,
+						"selected": 0
+					},
+					"children": []
+				}
+			]
+		}
 	]
 }

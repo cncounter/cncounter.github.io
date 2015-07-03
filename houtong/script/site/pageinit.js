@@ -974,6 +974,7 @@
 	};
 	
 	function refreshDeptTree(){
+		newPaper();// 杯具,Raphael.js 类库有 BUG,不能重用旧有的paper. 在size减小时，text会错位.
 		var node = currentCacheDept();
 		showDeptImage(node);
 		
@@ -991,6 +992,8 @@
 	};
 	//
 	function newPaper(holder){
+		holder = holder || global.holder; // 缓存
+		global.holder = holder;
 		//
 		var $holder = $(holder);
 		//
@@ -1446,6 +1449,7 @@
 			var text = node.text;
 			$current_org_name.text(text); 
 			// 
+			newPaper();
 			showDeptImage(node);
 		});
 		
@@ -1461,6 +1465,7 @@
 				var text = node.text;
 				$current_org_name.text(text); 
 				// 
+				newPaper();
 				showDeptImage(node);
 			}
 		});
