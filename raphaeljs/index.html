@@ -4,10 +4,10 @@
 		<meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-		<title>Raphaël—JavaScript Library</title>
+		<title>Raphaël—JavaScript 库</title>
 		<meta name="author" content="Dmitry Baranovskiy">
-		<meta name="description" content="Vector Graphics JavaScript Library">
-		<meta name="keywords" content="JavaScript Library, Raphael, SVG, VML">
+		<meta name="description" content="Vector Graphics JavaScript 库">
+		<meta name="keywords" content="JavaScript 库, Raphael, SVG, VML">
 		<meta name="viewport" content="width=450">
 		<link rel="alternate" type="application/atom+xml" href="//twitter.com/statuses/user_timeline/17180567.atom">
 		<link rel="stylesheet" href="site.css">
@@ -16,7 +16,7 @@
 	</head>
 	<body class="raphael" id="raphael.dmitry.baranovskiy.com">
 		<div id="header">
-			<h1><span>&nbsp;</span>Raphaël—JavaScript Library</h1>
+			<h1><span>&nbsp;</span>Raphaël—JavaScript 库</h1>
 		</div>
 		<div id="content">
 			<div id="top">
@@ -30,12 +30,12 @@
 					那么，通过Raphaël可以很方便地实现这些需求.
 				</p>
 				<p class="not-prime">
-					Raphaël ['ræfeɪəl] uses the <abbr title="Sclable Vector Graphics">SVG</abbr><abbr title="World
-					Wide Web Consortium">W3C</abbr> Recommendation and <abbr title="Vector Markup Language">VML</abbr>
-					as a&nbsp;base for creating graphics. This means every graphical object you create is also
-					a&nbsp;<abbr title="Document Object Model">DOM</abbr> object, so you can attach JavaScript event
-					handlers or modify them later. Raphaël’s goal is to provide an adapter that will make drawing
-					vector art compatible cross-browser and easy.
+					Raphaël ['ræfeɪəl] 兼容 <abbr title="Sclable Vector Graphics">SVG</abbr> 
+					<abbr title="World Wide Web Consortium">W3C</abbr> 推荐标准, 使用 <abbr title="Vector Markup Language">VML</abbr>
+					作为创建图形的标准 . 也就是说,Raphael中创建的所有对象都对应了 <abbr title="Document Object Model">DOM</abbr> 对象,
+					所以可以在创建时添加 JavaScript 事件处理器(event
+					handlers), 也可以在稍后加上. 
+					Raphaël 的目标是更加优雅和便捷地创建矢量图,成为一个跨浏览器的适配器.
 				</p>
 				<p class="not-prime">
 					Raphaël currently supports Firefox&nbsp;3.0+, Safari&nbsp;3.0+, Chrome&nbsp;5.0+, Opera&nbsp;9.5+
@@ -43,151 +43,153 @@
 				</p>
 				<h2 id="how-to-use-it"><span>&nbsp;</span>How to use it?</h2>
 				<p>
-					Download and include <code>
-						raphael.js</code>
-					into your HTML page, then use it as simple as:
+					下载后在 HTML 页面中引入 <code>raphael.js</code>,
+					就可以像下面这样使用了:
 				</p>
 				<pre class="javascript code">
-<code><span class="c">// Creates canvas 320 × 200 at 10, 50</span>
+<code><span class="c">// 创建一块画布(canvas,在 Raphael 中一般称为 paper,画纸)</span>
+<span class="c">// 左上角坐标点: 10, 50,宽高为 320 × 200 </span>
 <b>var</b> paper <span class="s">=</span> Raphael(<span class="d">10</span>, <span class="d">50</span>, <span class="d">320</span>, <span class="d">200</span>);
 
-<span class="c">// Creates circle at x = 50, y = 40, with radius 10</span>
+<span class="c">// 在paper上绘制圆形(circle)</span>
+<span class="c">// 坐标点 x = 50, y = 40, 半径(radius)为 10</span>
 <b>var</b> circle <span class="s">=</span> paper.circle(<span class="d">50</span>, <span class="d">40</span>, <span class="d">10</span>);
-<span class="c">// Sets the fill attribute of the circle to red (#f00)</span>
+<span class="c">// 填充 circle, 设置填充色为红色 red (#f00)</span>
 circle.attr(<i>"fill"</i>, <i>"#f00"</i>);
 
-<span class="c">// Sets the stroke attribute of the circle to white</span>
+<span class="c">// 设置圆圈画笔属性(stroke attribute)为白色(white)</span>
 circle.attr(<i>"stroke"</i>, <i>"#fff"</i>);</code>
 </pre>
-				<h2 id="demo"><span>&nbsp;</span>Demos</h2>
+				<h2 id="demo"><span>&nbsp;</span>示例:</h2>
 				<ul id="demos">
 					<li id="playground">
-						<a href="playground.html" title="Raphaël Playground">Raphaël Playground</a>
+						<a href="playground.html" target="_blank" title="Raphaël Playground">Raphaël Playground</a>
 					</li>
 					<li id="reflection">
-						<a href="reflection.html" title="Reflection">Reflection</a>
+						<a href="reflection.html" target="_blank" title="Reflection">Reflection</a>
 					</li>
 					<li id="rotation1">
-						<a href="image-rotation.html" title="Image rotation">Image rotation</a>
+						<a href="image-rotation.html" target="_blank" title="Image rotation">Image rotation</a>
 					</li>
 					<li id="rotation2">
-						<a href="text-rotation.html" title="Text rotation">Text rotation</a>
+						<a href="text-rotation.html" target="_blank" title="Text rotation">Text rotation</a>
 					</li>
 					<li id="impact">
-						<a href="github/impact.html" title="GitHub-a-like impact chart">GitHub-a-like impact chart</a>
+						<a href="github/impact.html" target="_blank" title="GitHub-a-like impact chart">GitHub-a-like impact chart</a>
 					</li>
 					<li id="punch">
-						<a href="github/dots.html" title="GitHub-a-like punch chart">GitHub-a-like punch chart</a>
+						<a href="github/dots.html" target="_blank" title="GitHub-a-like punch chart">GitHub-a-like punch chart</a>
 					</li>
 					<li id="pie">
-						<a href="pie.html" title="GitHub-a-like languages chart">GitHub-a-like languages chart</a>
+						<a href="pie.html" target="_blank" title="GitHub-a-like languages chart">GitHub-a-like languages chart</a>
 					</li>
 					<li id="analytics">
-						<a href="analytics.html" title="Raphaël Analytics chart">Raphaël Analytics chart</a>
+						<a href="analytics.html" target="_blank" title="Raphaël Analytics chart">Raphaël Analytics chart</a>
 					</li>
 					<li id="polar">
-						<a href="polar-clock.html" title="Polar Clock">Polar Clock</a>
+						<a href="polar-clock.html" target="_blank" title="Polar Clock">Polar Clock</a>
 					</li>
 					<li id="spin">
-						<a href="spin-spin-spin.html" title="Dynamic Spinner">Dynamic Spinner</a>
+						<a href="spin-spin-spin.html" target="_blank" title="Dynamic Spinner">Dynamic Spinner</a>
 					</li>
 					<li id="australia">
-						<a href="australia.html" title="Australian Map">Australian Map</a>
+						<a href="australia.html" target="_blank" title="Australian Map">Australian Map</a>
 					</li>
 					<li id="helvetica">
-						<a href="helvetica.html" title="Dancing Helvetica">Dancing Helvetica</a>
+						<a href="helvetica.html" target="_blank" title="Dancing Helvetica">Dancing Helvetica</a>
 					</li>
 					<li id="chart">
-						<a href="chart.html" title="Multichart">Multichart</a>
+						<a href="chart.html" target="_blank" title="Multichart">Multichart</a>
 					</li>
 					<li id="animation">
-						<a href="animation.html" title="Animation">Animation</a>
+						<a href="animation.html" target="_blank" title="Animation">Animation</a>
 					</li>
 					<li id="tiger">
-						<a href="tiger.html" title="SVG “Hello World”">Tiger</a>
+						<a href="tiger.html" target="_blank" title="SVG “Hello World”">Tiger</a>
 					</li>
 					<li id="hand">
-						<a href="hand.html" title="Hand">Hand</a>
+						<a href="hand.html" target="_blank" title="Hand">Hand</a>
 					</li>
 					<li id="ichart">
-						<a href="ichart.html" title="Interactive Chart">Interactive Chart</a>
+						<a href="ichart.html" target="_blank" title="Interactive Chart">Interactive Chart</a>
 					</li>
 					<li id="graffle">
-						<a href="graffle.html" title="Diagram">Diagram</a>
+						<a href="graffle.html" target="_blank" title="Diagram">Diagram</a>
 					</li>
 					<li id="fonts">
-						<a href="fonts.html" title="Custom Fonts">Custom Fonts</a>
+						<a href="fonts.html" target="_blank" title="Custom Fonts">Custom Fonts</a>
 					</li>
 					<li id="easing">
-						<a href="easing.html" title="Animation Easing">Animation Easing</a>
+						<a href="easing.html" target="_blank" title="Animation Easing">Animation Easing</a>
 					</li>
 					<li id="ball">
-						<a href="ball.html" title="Gradients Example">Gradients Example</a>
+						<a href="ball.html" target="_blank" title="Gradients Example">Gradients Example</a>
 					</li>
 					<li id="curver">
-						<a href="curver.html" title="Mini Illustrator">Curver</a>
+						<a href="curver.html" target="_blank" title="Mini Illustrator">Curver</a>
 					</li>
 					<li id="gear">
-						<a href="gear.html" title="Animation along the path demo">Animation along the path demo</a>
+						<a href="gear.html" target="_blank" title="Animation along the path demo">Animation along the path demo</a>
 					</li>
 					<li id="scape">
-						<a href="/scape/" title="3D Shooter">3D Shooter</a>
+						<a href="/scape/" target="_blank" title="3D Shooter">3D Shooter</a>
 					</li>
 					<li id="picker">
-						<a href="picker.html" title="Colour Picker">Colour Picker</a>
+						<a href="picker.html" target="_blank" title="Colour Picker">Colour Picker</a>
 					</li>
 					<li id="growing-pie">
-						<a href="growing-pie.html" title="Growing Pie">Growing Pie</a>
+						<a href="growing-pie.html" target="_blank" title="Growing Pie">Growing Pie</a>
 					</li>
 					<li id="bounce">
-						<a href="bounce.html" title="Bounce">Bounce</a>
+						<a href="bounce.html" target="_blank" title="Bounce">Bounce</a>
 					</li>
 					<li id="world">
-						<a href="/world/" title="World Map">World Map</a>
+						<a href="/world/" target="_blank" title="World Map">World Map</a>
 					</li>
 				</ul>
 			</div>
 			<div id="column-2">
 				<ul id="aside">
 					<li id="download">
-						<h2><a href="//github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js" title="Minified Library Code"><span>&nbsp;</span>Download v.&nbsp;2.1.2 (91&nbsp;Kb)</a></h2>
+						<h2><a href="//github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js" target="_blank" title="Minified Library Code"><span>&nbsp;</span>下载v.&nbsp;2.1.2 版本(91&nbsp;Kb)</a></h2>
 						<p>
-							Our recommendation is to <abbr title="GNU ZIP">GZIP</abbr> it. It will help to reduce file size.
+							建议在使用时开启服务器的 <abbr title="GNU ZIP">GZIP</abbr> 压缩.
+							这有助于减小文件大小.
 						</p>
 						<p>
-							You can download <a href="//github.com/DmitryBaranovskiy/raphael/raw/master/raphael.js" title="Uncompressed Library Code">uncompressed source (299&nbsp;Kb)</a> as well.
+							你还可以下载: <a href="//github.com/DmitryBaranovskiy/raphael/raw/master/raphael.js" target="_blank" title="Uncompressed Library Code">未压缩过的源码版本(299&nbsp;Kb)</a>.
 						</p>
 					</li>
 					<li id="documentation">
-						<h2><a href="reference.html" title="Documentation"><span>&nbsp;</span>Documentation</a></h2>
+						<h2><a href="reference.html" title="Documentation"><span>&nbsp;</span>API文档(Documentation)</a></h2>
 					</li>
 					<li id="discuss">
-						<h2><a href="//groups.google.com/group/raphaeljs" title="Google Group"><span>&nbsp;</span>Discussion Group</a></h2>
+						<h2><a href="//groups.google.com/group/raphaeljs" target="_blank" title="Google Group"><span>&nbsp;</span>讨论组(Discussion Group)</a></h2>
 					</li>
 					<!-- <li id="irc">
 					<h2><span>&nbsp;</span>IRC Channel</h2>
 					<p>#raphael.js at irc.freenode.net</p>
 					</li> -->
 					<li id="twitter">
-						<h2><a href="//twitter.com/RaphaelJS/" title="Twitter"><span>&nbsp;</span>Twitter</a></h2>
+						<h2><a href="//twitter.com/RaphaelJS/" target="_blank" title="Twitter"><span>&nbsp;</span>推特(Twitter)</a></h2>
 					</li>
 					<li id="icons">
-						<h2><a href="./icons/index.html" title="Free icons"><span>&nbsp;</span>Free Icons</a></h2>
+						<h2><a href="./icons/index.html" target="_blank" title="Free icons"><span>&nbsp;</span>免费的图标Path(Free Icons)</a></h2>
 					</li>
 					<li id="donate">
-						<h2><a href="//www.pledgie.com/campaigns/1776" title="Donate, but only if you like it"><span>&nbsp;</span>Donate</a></h2>
+						<h2><a href="//www.pledgie.com/campaigns/1776" target="_blank" title="Donate, but only if you like it"><span>&nbsp;</span>捐赠(Donate)</a></h2>
 					</li>
 					<li id="opensource">
-						<h2><a href="/license.html" rel="license" title="MIT License"><span>&nbsp;</span>MIT License</a></h2>
+						<h2><a href="/license.html" rel="license" target="_blank" title="MIT License"><span>&nbsp;</span>授权协议(MIT License)</a></h2>
 					</li>
 					<li id="sencha">
-						<h2>Part of <strong><a href="//sencha.com/"><span>&nbsp;</span>Sencha Labs</a></strong></h2>
+						<h2>感谢 <strong><a href="//sencha.com/"><span>&nbsp;</span>Sencha Labs</a></strong></h2>
 					</li>
 					<li id="github">
-						<h2><a href="//github.com/DmitryBaranovskiy/raphael/" title="Source Code at GitHub"><span>&nbsp;</span>Source <em class="amp">&amp;</em> Bugs</a></h2>
+						<h2><a href="//github.com/DmitryBaranovskiy/raphael/" target="_blank" title="Source Code at GitHub"><span>&nbsp;</span>查看源码(Source <em class="amp">&amp;</em> Bugs)</a></h2>
 					</li>
 					<li id="t-shirts">
-						<h2><a href="//www.redbubble.com/people/dmitrybaranovsk/shop/raphaeljs+t-shirts" title="t-shirts for sale"><span>&nbsp;</span>T-shirts <em class="amp">&amp;</em> Stickers</a></h2>
+						<h2><a href="//www.redbubble.com/people/dmitrybaranovsk/shop/raphaeljs+t-shirts" target="_blank" title="t-shirts for sale"><span>&nbsp;</span>社区玩乐(T-shirts <em class="amp">&amp;</em> Stickers)</a></h2>
 					</li>
 					<li id="quotes">
 						<h2><span>&nbsp;</span>Quotes on Twitter</h2>
@@ -200,7 +202,7 @@ circle.attr(<i>"stroke"</i>, <i>"#fff"</i>);</code>
 				</ul>
 			</div>
 			<div id="footer">
-				<h3 id="copyright"><a href="http://raphaeljs.com/license.html" title="MIT License" rel="license">版权所有: </a> <a href="//dmitry.baranovskiy.com/">Dmitry Baranovskiy</a></h3>
+				<h3 id="copyright"><a href="http://raphaeljs.com/license.html" target="_blank" title="MIT License" rel="license">版权所有: </a> <a href="//dmitry.baranovskiy.com/">Dmitry Baranovskiy</a></h3>
 				<h3 id="font">Logo 设计: <a href="//wasabicube.com/">Wasabicube</a></h3>
 			</div>
 		</div>
