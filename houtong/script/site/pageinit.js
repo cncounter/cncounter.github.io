@@ -85,6 +85,9 @@
 		// 2. 预定义大小,计算出结果
 		var tree_with_xy = calcXY(tree_with_size, 0, 0, expand_level);
 		
+		// 缓存
+		global.tree_with_xy = tree_with_xy;
+		
 		// 3. 开始绘制
 		fitPaperSize(paper, tree_with_xy, expand_level);
 		var tree = drawTree(paper, tree_with_xy, expand_level);
@@ -962,11 +965,30 @@
 		var x = global.config.offset.x || 0;
 		var y = global.config.offset.y || 0;
 		//
+		fixZoomAndOffset();
+		//
 		var fit = false;
 		//
 		paper.setViewBox(x, y,nw, nh, fit);
 		//
 		$(".transient").remove();
+		
+		// 修正大小和倍数
+		function fixZoomAndOffset(){
+			//
+			var tree_with_xy = global.tree_with_xy;
+			var offset = global.config.offset;
+			var width_dept = global.config.width_dept;
+			var height_dept = global.config.height_dept;
+			//
+			var ox = (tree_with_xy.x + width_dept/2 - offset.x)* (10-zoomNum) /10;
+			var oy = (tree_with_xy.y - offset.y)* (10-zoomNum) /10;
+			// 计算 根元素相对偏移了多少距离 //
+			//
+			x += ox; //
+			y += oy;
+			//debug(offset, ox, oy,zoomNum);
+		};
     };
 	//
 	function currentCacheDept(node){
@@ -1026,7 +1048,7 @@
         var holder1 = document.getElementById("holder1");
         //
         var value = global.config.zoom_num;
-        var maxvalue = 20;
+        var maxvalue = 16;
         var minvalue = 3;
         var c = {
             	value : value
