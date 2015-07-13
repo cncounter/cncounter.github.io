@@ -950,6 +950,9 @@
 		var paper = global.paper;
 		var zoomNum = global.config.zoom_num;
 		//
+		var offset = 10 - zoomNum;
+		zoomNum = 10 + offset;
+		//
 		var width = paper.width;
 		var height = paper.height;
 		//
@@ -1019,6 +1022,47 @@
 	
     // 创建进度条
 	function loadRaphaelProgressBar() {
+		//
+        var holder1 = document.getElementById("holder1");
+        //
+        var value = global.config.zoom_num;
+        var maxvalue = 20;
+        var minvalue = 3;
+        var c = {
+            	value : value
+            	, maxvalue : maxvalue
+            	, minvalue : minvalue
+            	, element : holder1
+            	, onchange : function(value){
+            		//
+            		var old_value = global.config.zoom_num;
+            		var zoom_num_dept = global.config.zoom_num_dept;
+            		var zoom_num_emp = global.config.zoom_num_emp;
+            		//
+					global.config.zoom_num = value;
+            		// 触动阀值
+            		if(old_value < zoom_num_dept && value >= zoom_num_dept){
+						return refreshDeptTree();
+            		} else if(old_value >= zoom_num_dept && value < zoom_num_dept){
+						return refreshDeptTree();
+            		}
+            		// 触动阀值
+            		if(old_value < zoom_num_emp && value >= zoom_num_emp){
+						return refreshDeptTree();
+            		} else if(old_value >= zoom_num_emp && value < zoom_num_emp){
+						return refreshDeptTree();
+            		}
+            		// 普通情况
+					refreshPaperZoom();
+          		}
+        };
+		var pbar = new ScaleBar(c);
+		pbar.init();
+        global.pbar = pbar;
+	};
+	
+    // 创建进度条
+	function loadRaphaelProgressBar_OLD() {
 		//
         var holder1 = document.getElementById("holder1");
         //
@@ -1222,9 +1266,9 @@
 			//
 			if(zoomUp){
 				// 放大
-				zoomNum --; // 这是相反的
-			} else {
 				zoomNum ++; // 这是相反的
+			} else {
+				zoomNum --; // 这是相反的
 			}
 			//
 			if(zoomNum < 3){

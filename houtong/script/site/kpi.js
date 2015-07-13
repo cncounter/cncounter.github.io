@@ -1093,6 +1093,9 @@
 		var config = global.config;
 		var zoomNum = config.zoom_num;
 		//
+		var offset = 10 - zoomNum;
+		zoomNum = 10 + offset;
+		//
 		var width = paper.width;
 		var height = paper.height;
 		//
@@ -1120,6 +1123,47 @@
 	// 上面是绘制战略路径图的逻辑代码
     // 创建进度条
 	function loadRaphaelProgressBar() {
+		//
+        var holder1 = document.getElementById("holder1");
+        //
+		var config = global.config;
+        var value = config.zoom_num;
+        var maxvalue = 18;
+        var minvalue = 2;
+        var c = {
+            	value : value
+            	, maxvalue : maxvalue
+            	, minvalue : minvalue
+            	, element : holder1
+            	, onchange : function(value){
+            		//
+            		var old_value = config.zoom_num;
+            		var zoom_num_dept = config.zoom_num_dept;
+            		var zoom_num_emp = config.zoom_num_emp;
+            		//
+					config.zoom_num = value;
+            		// 触动阀值
+            		if(old_value < zoom_num_dept && value >= zoom_num_dept){
+						return refreshKPITree();
+            		} else if(old_value >= zoom_num_dept && value < zoom_num_dept){
+						return refreshKPITree();
+            		}
+            		// 触动阀值
+            		if(old_value < zoom_num_emp && value >= zoom_num_emp){
+						return refreshKPITree();
+            		} else if(old_value >= zoom_num_emp && value < zoom_num_emp){
+						return refreshKPITree();
+            		}
+            		// 普通情况
+					refreshPaperZoom();
+          		}
+        };
+		var pbar = new ScaleBar(c);
+		pbar.init();
+        global.pbar = pbar;
+	};
+    // 创建进度条
+	function loadRaphaelProgressBar_OLD() {
 		//
         var holder1 = document.getElementById("holder1");
         //
@@ -1209,7 +1253,7 @@
 			//
 			if(checked){
 				global.config.show_root = 1;
-				global.config.expand_level = 2;
+				global.config.expand_level = 3;
 			} else {
 				global.config.show_root = 0;
 				global.config.expand_level = 3;
@@ -1315,15 +1359,15 @@
 			//
 			if(zoomUp){
 				// 放大
-				zoomNum --; // 这是相反的
-			} else {
 				zoomNum ++; // 这是相反的
+			} else {
+				zoomNum --; // 这是相反的
 			}
 			//
 			if(zoomNum < 3){
-				zoomNum = 3;
+				//zoomNum = 3;
 			} else if(zoomNum > 25){
-				zoomNum = 25;
+				//zoomNum = 25;
 			}
 			//
 			if(global.pbar && global.pbar.val){
