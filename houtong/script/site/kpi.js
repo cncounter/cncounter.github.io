@@ -133,13 +133,15 @@
 		fitPaperSize(paper, tree_with_xy, expand_level);
 		var tree = drawKPINodeTree(paper, tree_with_xy, expand_level);
 		// 
-		// refreshPaperZoom();
+		// fixWhitePaperSize();
 		
 		// 校正位置
 		moveRootToCenter(paper, tree_with_xy);
 		
 		// 3.1 校正点击加号展开时自身位置不改变的问题
 		fixExpandNodePosition(paper, tree_with_xy);
+		// 3.2 修正缩放引起的位置偏移
+		fixZoom2Offset();
 		
 		// 4. 绑定事件
 		
@@ -210,13 +212,13 @@
 	function _drawKPINode_Basix(paper, node){
 		// 计算基础数据
 		var config = global.config;
-		//
+		// 
 		var w = node.width || config.width_dept;
 		var h = node.height || config.height_dept;
 		var r = config.radius_dept;
 		var pad = config.padding_dept;
 		var pad_top = config.padding_dept_top;
-		var zoom_num = config.zoom_num;
+		var zoom_num = 20 - config.zoom_num;
 		var zoom_num_dept = config.zoom_num_dept;
 		var zoom_num_emp = config.zoom_num_emp;
 		//
@@ -330,64 +332,25 @@
 			var exp_x = pRight.x;
 			var exp_y = pRight.y;
 			
+			//
+			var exp_w = 16;
+			var exp_h = 16;
+			exp_x -= exp_w/2;
+			exp_y -= exp_h/2;
 			
-		
-		//
-		var exp_w = 16;
-		var exp_h = 16;
-		exp_x -= exp_w/2;
-		exp_y -= exp_h/2;
-		
-		var expsrc = global.config.exp_c_src;
-		if(2 == expand_status){
-			expsrc = global.config.exp_x_src;
-		}
-		/**
-		 *
-			//exp_radius
-			var exp_radius = config.exp_radius;
-			var charExp = "";
-			if(1 == expand_status){
-				// 展开状态, -号
-				charExp = "-";
-			} else if(2 == expand_status){
-				// 收缩状态, +号
-				var charExp = "+";
+			var expsrc = global.config.exp_c_src;
+			if(2 == expand_status){
+				expsrc = global.config.exp_x_src;
 			}
-			*/
 			//
 			if(1 == expand_status || 2 == expand_status){
 				//
 				var exp_image = paper.image(expsrc, exp_x, exp_y, exp_w, exp_h);
 				iconcursor(exp_image);
-				/*
-				// 绘制展开状态/收缩状态, +号
-				var exp_circle = paper.circle(exp_x, exp_y, exp_radius);
-				var exp_char = paper.text(exp_x, exp_y, charExp);
-				//
-				exp_circle.attr({
-					"stroke-width": 2
-				});
-				exp_char.attr({
-					"font-size": 18
-				});
-				unselect(exp_char);
-				*/
 			} else {
 				// 不绘制. 0
 			}
 			//
-			/*
-			exp_circle && exp_circle.attr({
-				fill : "#eee"
-				,stroke : color
-				,cursor : "pointer"
-			});
-			exp_char && exp_char.attr({
-				stroke : color
-				,cursor : "pointer"
-			});
-			*/
 			// 绑定展开事件
 			function exp_handler(e, data){
 				// treenode
@@ -406,8 +369,6 @@
 			}
 			//
 			exp_image && exp_image.click(exp_handler);
-			//exp_circle && exp_circle.click(exp_handler);
-			//exp_char && exp_char.click(exp_handler);
 			
 		};
 		
@@ -463,7 +424,7 @@
 				ty += pad_top + 4;
 			}
 			
-			// type=4, 个人计划 TODO
+			// type=4, 个人计划 
 			if(type_Plan == type){
 				if(zoom_num >= zoom_num_dept){
 					//
@@ -505,7 +466,7 @@
 			
 			// type=2,战略主题
 			if(type_Subject == type){
-				
+				fontSize = 16;// 字体
 				if(zoom_num >= zoom_num_dept){
 					//
 					tx = x_s + w/2;
@@ -529,8 +490,8 @@
 				// 强制居中
 				ty = y_s + h/2;
 				textAnchor = "start";
-				textMaxLen = 10;
-				fontSize = 22;
+				textMaxLen = 13;
+				fontSize = 20;
 			}
 			
 			if(text.length > textMaxLen){
@@ -1051,6 +1012,24 @@
 		}
 		global.config.prevRootXY = prevRoot;
 	};
+	
+	function fixZoom2Offset(){
+		if(global.config.prevZoomOffset != null){
+			global.config.offset = global.config.prevZoomOffset;
+			refreshPaperZoom();
+		}
+		//
+		global.config.prevZoomOffset = null;
+	};
+	function cacheZoom2Offset(){
+		// 新对象
+		global.config.prevZoomOffset = {
+			x : global.config.offset.x
+			,
+			y : global.config.offset.y
+		};
+	};
+	
 	// 展开所有节点状态
 	function expandAllNodeStatus(checked){
 		// 
@@ -1158,26 +1137,38 @@
             	, minvalue : minvalue
             	, element : holder1
             	, onchange : function(value){
+            		// 先保存旧的值
+            		var o_value = global.config.zoom_num;
             		//
-            		var old_value = config.zoom_num;
-            		var zoom_num_dept = config.zoom_num_dept;
-            		var zoom_num_emp = config.zoom_num_emp;
-            		//
-					config.zoom_num = value;
-            		// 触动阀值
-            		if(old_value < zoom_num_dept && value >= zoom_num_dept){
-						return refreshKPITree();
-            		} else if(old_value >= zoom_num_dept && value < zoom_num_dept){
-						return refreshKPITree();
-            		}
-            		// 触动阀值
-            		if(old_value < zoom_num_emp && value >= zoom_num_emp){
-						return refreshKPITree();
-            		} else if(old_value >= zoom_num_emp && value < zoom_num_emp){
-						return refreshKPITree();
-            		}
-            		// 普通情况
-					refreshPaperZoom();
+					global.config.zoom_num = value;
+					if(needRebuild()){
+						cacheZoom2Offset();
+						return refreshDeptTree();
+					} else {
+	            		// 普通情况
+						refreshPaperZoom();
+					}
+					// 是否需要重新构建
+            		function needRebuild(){ // TODO
+	            		//
+	            		var zoom_num_dept = global.config.zoom_num_dept;
+	            		var zoom_num_emp = global.config.zoom_num_emp;
+	            		var old_value = 20 - o_value;
+	            		var value = 20 - global.config.zoom_num;
+	            		// 触动阀值
+	            		if(old_value < zoom_num_dept && value >= zoom_num_dept){
+							return true;
+	            		} else if(old_value >= zoom_num_dept && value < zoom_num_dept){
+							return true;
+	            		}
+	            		// 触动阀值
+	            		if(old_value < zoom_num_emp && value >= zoom_num_emp){
+							return true;
+	            		} else if(old_value >= zoom_num_emp && value < zoom_num_emp){
+							return true;
+	            		}
+	            		return false;
+            		};
           		}
         };
 		var pbar = new ScaleBar(c);

@@ -463,7 +463,7 @@
 		}
 		//
 		var linkx = x_s + w/2;
-		var linky = y_s + h/2 + pad/2;
+		var linky = y_s + h/2 + pad/2 + 4;
 		// 如果缩放比例太小,则不显示
 		if(20-global.config.zoom_num < global.config.zoom_num_dept){
 			
@@ -499,7 +499,7 @@
 		var fsize= 14;
 		var mnx = mx + pad + mw;
 		var mny = my +  fsize - pad/2;
-		var manText = paper.text(mnx, mny , "1").attr({
+		var manText = paper.text(mnx, mny , "3").attr({
 			"font-family":"microsoft yahei"
 			, "font-size" : fsize
 			, "text-anchor" : "middle"
@@ -583,9 +583,9 @@
 		
 		//
 		var fsize= 14;
-		var enx = ex + pad/2 + ew;
+		var enx = ex + pad/2 + ew + 4;
 		var eny = mny;
-		var pcText = paper.text(enx, eny , "2").attr({
+		var pcText = paper.text(enx, eny , "22").attr({
 			"font-family":"microsoft yahei"
 			, "font-size" : fsize
 			, "text-anchor" : "middle"
@@ -819,7 +819,7 @@
 			//
 			if(children && children.length){
 				// 尝试显示自身为 root
-				showDeptImage(jsnode);
+				//showDeptImage(jsnode);
 				return;
 			}
 		}
@@ -1040,7 +1040,6 @@
             		//
 					global.config.zoom_num = value;
 					if(needRebuild()){
-						debug("needRebuild()="+needRebuild());//
 						cacheZoom2Offset();
 						return refreshDeptTree();
 					} else {
