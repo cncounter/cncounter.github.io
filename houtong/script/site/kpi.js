@@ -956,21 +956,20 @@
 	};
 	function calcDxDy(tree_with_xy){
 		//
-		var rx = tree_with_xy.x;
-		var ry = tree_with_xy.y;
+		var fixNode = getFixPositionNode(tree_with_xy) || tree_with_xy;
+		//
+		var rx = fixNode.x;
+		var ry = fixNode.y;
 		//
 		var config = global.config;
-		var startX = startX || config.left_paper;
-		var startY = startY || config.top_paper;
-		//
-		var spanX = tree_with_xy.spanX;
-		var spanY = tree_with_xy.spanY;
+		var startX = config.left_paper;
+		var startY = config.top_paper;
 		//
 		var pW = config.min_paper_width;
 		var pH = config.min_paper_height;
 		//
 		var dx =  rx - pW/2 + startX;
-		var dy =  ry - pH/2 + startY;
+		var dy =  ry  - startY;
 		
 		//
 		dx = 0; // 强制不使用计算值
@@ -979,13 +978,41 @@
 			// 修正一下位置
 			dx += global.config.width_dept;
 		}
-		
 		//
 		var dxdy = {
 			dx: dx
 			,dy: dy
 		};
+		debug("dxdy:",dxdy);
 		return dxdy;
+		
+		//
+		function getFixPositionNode(tree_with_xy){
+			if(!tree_with_xy){
+				return tree_with_xy;
+			}
+			var subnodes = tree_with_xy.subnodes;
+			if(!subnodes || !subnodes.length){
+				return tree_with_xy;
+			}
+			//
+			var sub = subnodes[0];
+			if(!sub){
+				return tree_with_xy;
+			}
+			//
+			var sub_subnodes = sub.subnodes;
+			if(!sub_subnodes || !sub_subnodes.length){
+				return sub;
+			}
+			//
+			var goal = sub_subnodes[0];
+			if(!goal){
+				return sub;
+			}
+			//
+			return goal;
+		};
 	};
 	// 根据 root 获取相对偏移,修正
 	function fixExpandNodePosition(paper, tree_with_xy){
