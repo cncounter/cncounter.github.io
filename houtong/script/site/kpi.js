@@ -956,7 +956,7 @@
 	};
 	function calcDxDy(tree_with_xy){
 		//
-		var fixNode = getFixPositionNode(tree_with_xy) || tree_with_xy;
+		var fixNode = getFixPositionInitNode(tree_with_xy) || tree_with_xy;
 		//
 		var rx = fixNode.x;
 		var ry = fixNode.y;
@@ -983,11 +983,10 @@
 			dx: dx
 			,dy: dy
 		};
-		debug("dxdy:",dxdy);
 		return dxdy;
 		
-		//
-		function getFixPositionNode(tree_with_xy){
+		// 获取 初始化时 时的固定位置Node信息
+		function getFixPositionInitNode(tree_with_xy){
 			if(!tree_with_xy){
 				return tree_with_xy;
 			}
@@ -1140,20 +1139,39 @@
 		$(".transient").remove();
 		
 		// 修正大小和倍数
-		function fixZoomAndOffset(){
+		function fixZoomAndOffset(){//
 			//
-			var tree_with_xy = global.tree_with_xy;
+			var fixZoomNode = getFixZoomNode(global.tree_with_xy) || global.tree_with_xy;
 			var offset = global.config.offset;
 			var width_dept = global.config.width_dept;
 			var height_dept = global.config.height_dept;
 			//
-			var ox = (tree_with_xy.x + width_dept/2 - offset.x)* (10-zoomNum) /10;
-			var oy = (tree_with_xy.y - offset.y)* (10-zoomNum) /10;
+			var ox = (fixZoomNode.x + width_dept/2 - offset.x)* (10-zoomNum) /10;
+			var oy = (fixZoomNode.y - offset.y)* (10-zoomNum) /10;
 			// 计算 根元素相对偏移了多少距离 //
 			//
 			x += ox; //
 			y += oy;
-			//debug(offset, ox, oy,zoomNum);
+		};
+		// 获取 Zoom 时的固定位置Node信息
+		function getFixZoomNode(tree_with_xy){
+			if(!tree_with_xy){
+				return tree_with_xy;
+			}
+			if(global.config.show_root){
+				//return tree_with_xy;
+			}
+			var subnodes = tree_with_xy.subnodes;
+			if(!subnodes || !subnodes.length){
+				return tree_with_xy;
+			}
+			//
+			var sub = subnodes[0];
+			if(!sub){
+				return tree_with_xy;
+			}
+			//
+			return sub;
 		};
     };
 	//
