@@ -9,6 +9,7 @@
 		height_dept : 140,
 		padding_dept : 12,
 		padding_dept_top : 20,
+		pad_line	: 30,
 		radius_dept : 10,
 		margin_parent : 60, // 间距
 		margin_partner : 20,
@@ -20,7 +21,7 @@
 		//
 		zoom_num : 10, // 缩放倍数,小数. 数字越小则距离屏幕前的你越近,显示越大
 		zoom_num_dept : 13, //不显示部门和负责人的阀值(含)
-		zoom_num_emp : 14, // 不显示经理和职员的阀值(含)
+		zoom_num_emp : 16, // 不显示经理和职员的阀值(含)
 		expand_level : 3, // 展开级别,展开全部,则设置为100即可
 		expand_all : 0,	  // 展开所有
 		show_mgr_title : 1, // 显示部门经理title
@@ -29,6 +30,10 @@
 		emp_src : "./image/e_36.png",
 		exp_c_src : "./image/expand_c.png",
 		exp_x_src : "./image/expand_x.png",
+		icon_subject_src : "./image/icon_subject.png",
+		icon_goal_src : "./image/icon_goal.png",
+		icon_plan_src : "./image/icon_plan.png",
+		line_hsep_src : "./image/line_hsep.png",
 		mgr_emp_size : 18,
 		min_paper_width : 800,
 		min_paper_height : 600,
@@ -218,9 +223,7 @@
 		var r = config.radius_dept;
 		var pad = config.padding_dept;
 		var pad_top = config.padding_dept_top;
-		var zoom_num = 20 - config.zoom_num;
-		var zoom_num_dept = config.zoom_num_dept;
-		var zoom_num_emp = config.zoom_num_emp;
+		var pad_line = config.pad_line;
 		//
 		var color = Raphael.color(config.color);
 		
@@ -243,7 +246,7 @@
 		_drawExpIcon();
 		// 绘制查看按钮
 		if(type_Strategy != type){
-			if(zoom_num >= zoom_num_emp){
+			if(hideSmallZoom()){
 				// 不绘制
 			} else {
 				_drawLookInfo();
@@ -251,17 +254,25 @@
 		}
 		// 都需要绘制节点Title
 		_drawTitletext();
-		// 绘制用户姓名图标
-		if(type_Plan == type){
-			if(zoom_num >= zoom_num_emp){
+		// 绘制图标与分类
+		if(type_Strategy != type){
+			if(hideSmallZoom()){
 				// 不绘制
 			} else {
-				_drawUserNameIcon();
+				_drawIconType();
+			}
+		}
+		// 绘制分隔线
+		if(type_Strategy != type){
+			if(hideSmallZoom()){
+				// 不绘制
+			} else {
+				_drawSepLine();
 			}
 		}
 		// 绘制状态图标
 		if(type_Goal == type || type_Plan == type){
-			if(zoom_num >= zoom_num_dept){
+			if(hideMiddleZoom()){
 				// 不绘制
 			} else {
 				_drawStatusIcon();
@@ -269,7 +280,7 @@
 		}
 		//绘制进度信息
 		if(type_Goal == type || type_Plan == type){
-			if(zoom_num >= zoom_num_dept){
+			if(hideMiddleZoom()){
 				// 不绘制
 			} else {
 				_drawRateInfo();
@@ -277,18 +288,18 @@
 		}
 		// 绘制更新时间
 		if(type_Goal == type || type_Plan == type){
-			if(zoom_num >= zoom_num_dept){
+			if(hideMiddleZoom()){
 				// 不绘制
 			} else {
 				_drawUpdateTime();
 			}
 		}
-		// 绘制部门name
-		if(type_Goal == type || type_Subject == type){
-			if(zoom_num >= zoom_num_emp){
+		// 绘制部门name_或用户姓名
+		if(type_Strategy != type){
+			if(hideSmallZoom()){
 				// 不绘制
 			} else {
-				_drawDeptnameText();
+				_drawDeptUserNameText();
 			}
 		}
 		// 绘制逻辑执行完成
@@ -296,15 +307,35 @@
 		
 		// 下面是闭包函数,通过上方的代码调用执行.
 		
+		// 隐藏 级别,中等
+		function hideMiddleZoom(){
+			var zoom_num = 20 - config.zoom_num;
+			var zoom_num_dept = config.zoom_num_dept;
+			if(zoom_num >= zoom_num_dept){
+				return true;
+			}
+			return false;
+		};
+		// 隐藏 级别,更小
+		function hideSmallZoom(){
+			var zoom_num = 20 - config.zoom_num;
+			var zoom_num_emp = config.zoom_num_emp;
+			if(zoom_num >= zoom_num_emp){
+				return true;
+			}
+			return false;
+		};
+		
 		// 绘制矩形框
 		function _drawRect(){
 			// 1. 绘制矩形框
 			var rect = paper.rect(x_s, y_s, w, h, r);
 			rect.datanode = node;
 			rect.attr({
-				fill : color,
+				fill : "#72d3da",
 				stroke : color,
-				"fill-opacity" : 0.3,
+				"fill-opacity" : 0.2,
+				"stroke-opacity" : 0.5,
 				"stroke-width" : 2
 			});
 			node.rect = rect;
@@ -376,7 +407,10 @@
 		function _drawLookInfo(){
 			var lookinfo = "查看";
 			//
-			var lookText = paper.text(x_e - 40, y_e - 14 , lookinfo);
+			var lx = x_e - 40;
+			var ly = y_e - pad_line/2;
+			//
+			var lookText = paper.text(lx, ly , lookinfo);
 			lookText.attr({
 				"font-family":"microsoft yahei",
 				"font-size" : 14
@@ -407,7 +441,7 @@
 		function _drawTitletext(){
 			// 计算title节点的x,y
 			var tx = x_s + pad;
-			var ty = y_s + pad_top;
+			var ty = y_s + pad_line + pad_top/2 + 4;;
 			
 			var text = node.name || node.text || "";
 
@@ -415,18 +449,16 @@
 			//
 			var fontSize = 14;
 			var textAnchor = "start";
-			var textMaxLen = 10;
+			var textMaxLen = 12;
 			var lines = 1;
 			if(text.length > textMaxLen){
 				lines = 2;
 			}
-			if(type_Plan == type){
-				ty += pad_top + 4;
-			}
 			
-			// type=4, 个人计划 
-			if(type_Plan == type){
-				if(zoom_num >= zoom_num_dept){
+			// type=4, 个人计划 ; type=3, 部门目标
+			if(type_Plan == type || type_Goal == type){
+				
+				if(hideMiddleZoom()){
 					//
 					tx = x_s + w/2;
 					ty = y_s + h/2;
@@ -435,31 +467,9 @@
 					}
 					fontSize = 18;
 					textAnchor = "middle";
-					textMaxLen = 12;
 				}
-				if(zoom_num >= zoom_num_emp){
+				if(hideSmallZoom()){
 					ty = y_s + h/2 + pad_top/3;
-					textMaxLen = 12;
-					fontSize = 20;
-				}
-			}
-			
-			// type=3, 部门目标
-			if(type_Goal == type){
-				if(zoom_num >= zoom_num_dept){
-					//
-					tx = x_s + w/2;
-					ty = y_s + h/2 - pad_top*3/2;
-					if(lines > 1){
-						ty -= pad_top/2;
-					}
-					fontSize = 18;
-					textAnchor = "middle";
-					textMaxLen = 12;
-				}
-				if(zoom_num >= zoom_num_emp){
-					ty = y_s + h/2;
-					textMaxLen = 12;
 					fontSize = 20;
 				}
 			}
@@ -467,10 +477,10 @@
 			// type=2,战略主题
 			if(type_Subject == type){
 				fontSize = 16;// 字体
-				if(zoom_num >= zoom_num_dept){
+				if(hideMiddleZoom()){
 					//
 					tx = x_s + w/2;
-					ty = y_s + h/2 - pad_top*3/2;
+					ty = y_s + h/2 ;
 					if(lines > 1){
 						ty -= pad_top/2;
 					}
@@ -478,7 +488,7 @@
 					textAnchor = "middle";
 					textMaxLen = 12;
 				}
-				if(zoom_num >= zoom_num_emp){
+				if(hideSmallZoom()){
 					ty = y_s + h/2;
 					textMaxLen = 12;
 					fontSize = 24;
@@ -514,52 +524,62 @@
 			node.nameText = nameText;
 			// 
 		};
-		
-		// 闭包函数,绘制用户姓名和图标
-		function _drawUserNameIcon(){
-			//
-			var uiw = 24;
-			var uih = 24;
-			var uix = x_s + pad;
-			var uiy = y_s + 2;
-			var uicon= node.uicon;
-			var img = paper.image(uicon, uix, uiy, uiw, uih);
-			//
-			var unx = uix + uiw+pad/2;
-			var uny = uiy + uih/2;
-			// . 绘制用户信息
-			var uname = node.uname || "";
-			var unameText = paper.text(unx, uny, uname);
+		// 闭包函数,绘制图标与分类
+		function _drawIconType(){
+			// TODO _drawIconType
+			var icon_subject_src =  config.icon_subject_src;
+			var icon_goal_src = config.icon_goal_src;
+			var icon_plan_src = config.icon_plan_src;
 			
-			unameText.datanode = node;
-			unameText.attr({
-				"font-family":"microsoft yahei",
-				"font-weight": "bold",
-				"font-size" : 14,
-				"text-anchor" : "start",
-				cursor : "pointer"
+			//
+			if(type_Subject == type){
+				var src = config.icon_subject_src;
+				var text = "战略主题";
+			} else if(type_Goal == type){
+				var src = config.icon_goal_src;
+				var text = "部门目标";
+			} else if(type_Plan == type){
+				var src = config.icon_plan_src;
+				var text = "保障计划";
+			}
+			
+			var iw = pad_line * 0.8;
+			var ih = iw;
+			var ix = x_s+ pad*0.8;
+			var iy = y_s + pad_top/5;
+			var img_icon = paper.image(src, ix, iy, iw, ih);
+			
+			//
+			var tx = ix + iw + 6;
+			var ty = y_s + pad_line/2;
+			var typeText = paper.text(tx, ty , text);
+			typeText.attr({
+				"font-family": "microsoft yahei"
+				, "font-size" : 16
+				, "text-anchor" : "start"
+				, "fill" : "#2ae"
 			});
-			unselect(unameText);
-			// TODO 这里可以画一个图片
-			var ulx = uix;
-			var uly = uiy + uih + pad_top/3;
-			var dotText = paper.text(ulx, uly, "········································");
-			dotText.attr({
-				"font-family":"microsoft yahei",
-				"font-size" : 18,
-				"text-anchor" : "start",
-				cursor : "pointer"
-			});
-			unselect(dotText);
+			unselect(typeText);
 		};
-		
+		// 闭包函数,绘制分隔线
+		function _drawSepLine(){
+			var slw = w-2;
+			var slh = 1;
+			var slx_1 = x_s+1;
+			var slx_2 = slx_1;
+			var sly_1 = y_s + pad_line;
+			var sly_2 = y_e - pad_line;
+			var src = config.line_hsep_src;
+			var img_1 = paper.image(src, slx_1, sly_1, slw, slh);
+			var img_2 = paper.image(src, slx_2, sly_2, slw, slh);
+		};
 
 		// 闭包函数,绘制状态标记
 		function _drawStatusIcon(){
 			//
 			var sr = 10;
 			var sx = x_e - pad - sr/2;
-			var sy = y_s + pad_top;
+			var sy = y_s + pad_top*0.8;
 			// 0标黄, 1标红, 2标蓝
 			var status = node.status;
 			var color = "#eeec6e";
@@ -583,11 +603,8 @@
 		function _drawRateInfo(){
 			//
 			var jx = x_s + pad ;
-			var jy = y_s + h/2;
-			//
-			if(type_Plan == type){
-				jy += 20;
-			}
+			var jy = y_e - pad_line - pad_top/3 - pad_top;
+			
 			//
 			var rate = node.rate || 0;
 			var jinduinfo = "当前进度:";
@@ -630,11 +647,7 @@
 		function _drawUpdateTime(){
 			//
 			var ux = x_s + pad ;
-			var uy = y_e - h/3 + pad_top;
-			
-			if(type_Goal == type){
-				uy = uy - pad_top;
-			}
+			var uy = y_e - pad_line - pad_top/2;
 			
 			//
 			var updatetime = node.updatetime || "";
@@ -655,28 +668,32 @@
 		};
 		
 		// 闭包函数,绘制部门name
-		function _drawDeptnameText(){
+		function _drawDeptUserNameText(){
 			//
 			var dx = x_s + pad ;
-			var dy = y_e - h/3 + pad_top;
+			var dy = y_e - pad_line/2;
 			
 			//
 			var deptname = node.deptname || "";
+			var uname = node.uname || "";
 			
 			//
-			if(type_Goal == type){
-				deptname = "部门: " + deptname;
-			} else if(type_Subject == type){
+			if(type_Subject == type){
 				deptname = "主责: " + deptname;
+			} else if(type_Goal == type){
+				deptname = "部门: " + deptname;
+			} else if(type_Plan == type){
+				deptname = "负责人: " + uname;
 			}
 			
 			// 3.3更新时间
 			//
 			var deptnameText = paper.text(dx, dy , deptname);
 			deptnameText.attr({
-				"font-family":"microsoft yahei",
-				"font-size" : 12
+				"font-family":"microsoft yahei"
+				, "font-size" : 12
 				, "text-anchor" : "start"
+				, cursor : "pointer"
 			});
 			deptnameText.datanode = node;
 			unselect(deptnameText);
@@ -1143,7 +1160,7 @@
 					global.config.zoom_num = value;
 					if(needRebuild()){
 						cacheZoom2Offset();
-						return refreshDeptTree();
+						return refreshKPITree();
 					} else {
 	            		// 普通情况
 						refreshPaperZoom();
