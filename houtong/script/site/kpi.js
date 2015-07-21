@@ -90,7 +90,35 @@
 	// 刷新节点树
 	function refreshKPITree(){
 		var kpiInfo = currentCachedKPIInfo();
+		newPaper();// 杯具,Raphael.js 类库有 BUG,不能重用旧有的paper. 在size减小时，text会错位.
 		showKPIImageByJSON(kpiInfo);
+	};
+	
+	//
+	function newPaper(holder){
+		holder = holder || global.holder; // 缓存
+		global.holder = holder;
+		//
+		var $holder = $(holder);
+		//
+		var _width = $holder.width();
+		var _height = $holder.height();
+		//
+		if(_width > global.config.min_paper_width){
+			global.config.min_paper_width = _width;
+		}
+		if(_height > global.config.min_paper_height){
+			global.config.min_paper_height = _height;
+		}
+		
+		
+		var width = global.config.min_paper_width;
+		var height = global.config.min_paper_height;
+		// paper 画纸。
+		var paper = new Raphael(holder, width, height);
+		// 持有
+		global.paper = paper;
+		global.svg = paper ? paper.canvas : null;
 	};
 
 	// 显示KPI信息
@@ -471,6 +499,9 @@
 				if(hideSmallZoom()){
 					ty = y_s + h/2 + pad_top/3;
 					fontSize = 20;
+					if(lines > 1){
+						ty -= pad_top/2;
+					}
 				}
 			}
 			
@@ -1076,7 +1107,7 @@
 	// 展开所有节点状态
 	function expandAllNodeStatus(checked){
 		// 
-		global.config.expand_level = checked ? 100 : 2;
+		global.config.expand_level = checked ? 100 : 3;
 		global.config.expand_all = checked ? 1 : 0;
 		//
 		if(!checked){
@@ -1237,53 +1268,7 @@
 		pbar.init();
         global.pbar = pbar;
 	};
-    // 创建进度条
-	function loadRaphaelProgressBar_OLD() {
-		//
-        var holder1 = document.getElementById("holder1");
-        //
-        var $holder1 = $("#holder1");
-        var pos = $holder1.offset();
-		var config = global.config;
-        var value = config.zoom_num;
-        var c = {
-            	x : 10
-            	, y : 30
-            	, value : value
-				, minvalue : 2
-				, maxvalue : 18
-            	, vertical : 1
-            	, color : "#6fdeee"
-            	, element : holder1
-            	, fixsize : pos
-            	, onchange : function(value){
-            		//
-            		
-            		var old_value = config.zoom_num;
-            		var zoom_num_dept = config.zoom_num_dept;
-            		var zoom_num_emp = config.zoom_num_emp;
-            		//
-					config.zoom_num = value;
-            		// 触动阀值
-            		if(old_value < zoom_num_dept && value >= zoom_num_dept){
-						return refreshKPITree();
-            		} else if(old_value >= zoom_num_dept && value < zoom_num_dept){
-						return refreshKPITree();
-            		}
-            		// 触动阀值
-            		if(old_value < zoom_num_emp && value >= zoom_num_emp){
-						return refreshKPITree();
-            		} else if(old_value >= zoom_num_emp && value < zoom_num_emp){
-						return refreshKPITree();
-            		}
-            		// 普通情况
-					refreshPaperZoom();
-          		}
-        };
-        var pbar = Raphael.progressbar(c);
-        global.pbar = pbar;
-	};
-	
+    
 	//
 	function bindEvents() {
 		//
@@ -1689,6 +1674,7 @@
 			// 获取JSON_KPI信息
 			var successCallback = function(message){
 				//
+				newPaper();
 				showKPIImageByJSON(message);
 			};
 			requestAjax(url, data, successCallback);
@@ -1706,25 +1692,9 @@
 	function loadRaphael(holderid) {
 		//
 		var holder = document.getElementById(holderid);
-		var $holder = $(holder);
 		//
-		var _width = $holder.width();
-		var _height = $holder.height();
-		//
-		if(_width > global.config.min_paper_width){
-			global.config.min_paper_width = _width;
-		}
-		if(_height > global.config.min_paper_height){
-			global.config.min_paper_height = _height;
-		}
-		//
-		var width = global.config.min_paper_width;
-		var height = global.config.min_paper_height;
-		// paper 画纸。
-		var paper = new Raphael(holder, width, height);
-		// 持有
-		global.paper = paper;
-		global.svg = paper ? paper.canvas : null;
+		newPaper(holder);
+		
 		// 然后就完了。
 		// 等着触发事件. 然后绘制相应的图形
 	};

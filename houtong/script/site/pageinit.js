@@ -1074,49 +1074,6 @@
         global.pbar = pbar;
 	};
 	
-    // 创建进度条
-	function loadRaphaelProgressBar_OLD() {
-		//
-        var holder1 = document.getElementById("holder1");
-        //
-        var $holder1 = $("#holder1");
-        var pos = $holder1.offset();
-        var value = global.config.zoom_num;
-        var config = {
-            	x : 10
-            	, y : 30
-            	, value : value
-            	, vertical : 1
-            	, color : "#6fdeee"
-            	, element : holder1
-            	, fixsize : pos
-            	, onchange : function(value){
-            		//
-            		var old_value = global.config.zoom_num;
-            		var zoom_num_dept = global.config.zoom_num_dept;
-            		var zoom_num_emp = global.config.zoom_num_emp;
-            		//
-					global.config.zoom_num = value;
-            		// 触动阀值
-            		if(old_value < zoom_num_dept && value >= zoom_num_dept){
-						return refreshDeptTree();
-            		} else if(old_value >= zoom_num_dept && value < zoom_num_dept){
-						return refreshDeptTree();
-            		}
-            		// 触动阀值
-            		if(old_value < zoom_num_emp && value >= zoom_num_emp){
-						return refreshDeptTree();
-            		} else if(old_value >= zoom_num_emp && value < zoom_num_emp){
-						return refreshDeptTree();
-            		}
-            		// 普通情况
-					refreshPaperZoom();
-          		}
-        };
-        var pbar = Raphael.progressbar(config);
-        global.pbar = pbar;
-	};
-
 	// 将svg保存为png
 	function saveSVGToPNG(imgId) {
 		//
