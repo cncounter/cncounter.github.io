@@ -6859,13 +6859,13 @@ paper.set(paper.circle(<span class="d">100</span>, <span class="d">100</span>, <
 				</div>
 				<div class="dr-method">
 					<p>
-						Executes given function for each element in the set.
+						为集合中的每个元素执行给定的函数.
 					</p>
 					<p>
-						If function returns
+						如果 function 某次执行后返回
 						<code>false
 						</code>
-						it will stop loop running.
+						, 则停止接下来的循环过程.
 					</p>
 					<p class="header">
 						参数
@@ -6878,7 +6878,7 @@ paper.set(paper.circle(<span class="d">100</span>, <span class="d">100</span>, <
 							<em class="dr-type-function">function</em>
 						</dd>
 						<dd class="dr-description">
-							function to run
+							要执行的 function
 						</dd>
 						<dt class="dr-param">
 							thisArg
@@ -6887,11 +6887,11 @@ paper.set(paper.circle(<span class="d">100</span>, <span class="d">100</span>, <
 							<em class="dr-type-object">object</em>
 						</dd>
 						<dd class="dr-description">
-							context object for the callback
+							回调函数的 context 对象
 						</dd>
 					</dl>
 					<p class="dr-returns">
-						<strong class="dr-title">返回:</strong><em class="dr-type-object">object</em><span class="dr-description">Set object</span>
+						<strong class="dr-title">返回:</strong><em class="dr-type-object">object</em><span class="dr-description">Set 对象</span>
 					</p>
 				</div>
 				<div class="Set-pop-section">
@@ -6900,10 +6900,10 @@ paper.set(paper.circle(<span class="d">100</span>, <span class="d">100</span>, <
 				</div>
 				<div class="dr-method">
 					<p>
-						Removes last element and returns it.
+						弹出并返回最后一个元素.
 					</p>
 					<p class="dr-returns">
-						<strong class="dr-title">返回:</strong><em class="dr-type-object">object</em><span class="dr-description">element</span>
+						<strong class="dr-title">返回:</strong><em class="dr-type-object">object</em><span class="dr-description">弹出的 element</span>
 					</p>
 				</div>
 				<div class="Set-push-section">
@@ -6912,10 +6912,10 @@ paper.set(paper.circle(<span class="d">100</span>, <span class="d">100</span>, <
 				</div>
 				<div class="dr-method">
 					<p>
-						Adds each argument to the current set.
+						把传入的所有参数加入当前集合.
 					</p>
 					<p class="dr-returns">
-						<strong class="dr-title">返回:</strong><em class="dr-type-object">object</em><span class="dr-description">original element</span>
+						<strong class="dr-title">返回:</strong><em class="dr-type-object">object</em><span class="dr-description">原先存在的 element</span>
 					</p>
 				</div>
 				<div class="Set-splice-section">
@@ -6924,7 +6924,7 @@ paper.set(paper.circle(<span class="d">100</span>, <span class="d">100</span>, <
 				</div>
 				<div class="dr-method">
 					<p>
-						Removes given element from the set
+						从集合中删除给定范围的元素
 					</p>
 					<p class="header">
 						参数
@@ -6937,7 +6937,7 @@ paper.set(paper.circle(<span class="d">100</span>, <span class="d">100</span>, <
 							<em class="dr-type-number">number</em>
 						</dd>
 						<dd class="dr-description">
-							position of the deletion
+							删除元素的起始位置
 						</dd>
 						<dt class="dr-param">
 							count
@@ -6946,7 +6946,7 @@ paper.set(paper.circle(<span class="d">100</span>, <span class="d">100</span>, <
 							<em class="dr-type-number">number</em>
 						</dd>
 						<dd class="dr-description">
-							number of element to remove
+							要删除的元素个数
 						</dd>
 						<dt class="dr-param optional">
 							insertion…
@@ -6958,11 +6958,12 @@ paper.set(paper.circle(<span class="d">100</span>, <span class="d">100</span>, <
 							<em class="dr-type-object">object</em>
 						</dd>
 						<dd class="dr-description">
-							elements to insert
+							要插入的那些元素
 						</dd>
 					</dl>
 					<p class="dr-returns">
-						<strong class="dr-title">返回:</strong><em class="dr-type-object">object</em><span class="dr-description">set elements that were deleted</span>
+						<strong class="dr-title">返回:</strong><em class="dr-type-object">object</em>
+						<span class="dr-description">被删除的那些元素</span>
 					</p>
 				</div>
 				<div class="eve-section">
