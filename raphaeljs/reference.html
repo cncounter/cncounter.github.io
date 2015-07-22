@@ -1142,8 +1142,8 @@ circle2.animate(anim.delay(<span class="d">500</span>)); <span class="c">// 延�
 				</div>
 				<div class="dr-method">
 					<p>
-						Adds or retrieves given value asociated with given key.
-						See also <a href="#Element.removeData" class="dr-link">Element.removeData</a>
+						根据给定的key，添加或获取属性值.
+						另请参考 <a href="#Element.removeData" class="dr-link">Element.removeData</a>
 					</p>
 					<p class="header">
 						参数
@@ -1156,7 +1156,7 @@ circle2.animate(anim.delay(<span class="d">500</span>)); <span class="c">// 延�
 							<em class="dr-type-string">string</em>
 						</dd>
 						<dd class="dr-description">
-							key to store data
+							保存 data 的 key
 						</dd>
 						<dt class="dr-param optional">
 							value
@@ -1168,14 +1168,14 @@ circle2.animate(anim.delay(<span class="d">500</span>)); <span class="c">// 延�
 							<em class="dr-type-any">any</em>
 						</dd>
 						<dd class="dr-description">
-							value to store
+							要保存的 value
 						</dd>
 					</dl>
 					<p class="dr-returns">
 						<strong class="dr-title">返回:</strong><em class="dr-type-object">object</em><span class="dr-description"><a href="#Element" class="dr-link">Element</a></span>
 					</p>
 					<p>
-						or, if value is not specified:
+						如果没有传入  value 参数,则返回对应的 value :
 					</p>
 					<p class="dr-returns">
 						<strong class="dr-title">返回:</strong><em class="dr-type-any">any</em><span class="dr-description">value</span>
@@ -1183,12 +1183,9 @@ circle2.animate(anim.delay(<span class="d">500</span>)); <span class="c">// 延�
 					<p class="header">
 						用法
 					</p>
-					<pre class="javascript code"><code><b>for</b> (<b>var</b> i<span class="s"> = </span>
-							<span class="d">0</span>, i &lt; <span class="d">5</span>, i++) {
-    paper.circle(<span class="d">10</span>
-							<span class="s"> + </span>
-							<span class="d">15</span>
-							<span class="s"> * </span>i, <span class="d">10</span>, <span class="d">10</span>)
+					<pre class="javascript code">
+<code><b>for</b> (<b>var</b> i<span class="s"> = </span><span class="d">0</span>, i &lt; <span class="d">5</span>, i++) {
+    paper.circle(<span class="d">10</span><span class="s"> + </span><span class="d">15</span><span class="s"> * </span>i, <span class="d">10</span>, <span class="d">10</span>)
          .attr({fill: <i>"#<span class="d">000</span>"</i>})
          .data(<i>"i"</i>, i)
          .click(<b>function</b> () {
@@ -3282,7 +3279,7 @@ console.log(el.transform());
 				</div>
 				<div class="dr-method">
 					<p>
-						Return x coordinate for given point after transformation described by the matrix. See also <a href="#Matrix.y" class="dr-link">Matrix.y</a>
+						Return x coordinate for given point after transformation described by the matrix. 另请参考 <a href="#Matrix.y" class="dr-link">Matrix.y</a>
 					</p>
 					<p class="header">
 						参数
@@ -3317,7 +3314,7 @@ console.log(el.transform());
 				</div>
 				<div class="dr-method">
 					<p>
-						Return y coordinate for given point after transformation described by the matrix. See also <a href="#Matrix.x" class="dr-link">Matrix.x</a>
+						Return y coordinate for given point after transformation described by the matrix. 另请参考 <a href="#Matrix.x" class="dr-link">Matrix.x</a>
 					</p>
 					<p class="header">
 						参数
@@ -4648,7 +4645,7 @@ st.attr({fill: <i>"red"</i>}); <span class="c">// 改变集合内所有 circle �
 				<div class="dr-method">
 					<p>
 						Creates an animation object that can be passed to the <a href="#Element.animate" class="dr-link">Element.animate</a> or <a href="#Element.animateWith" class="dr-link">Element.animateWith</a> methods.
-						See also <a href="#Animation.delay" class="dr-link">Animation.delay</a> and <a href="#Animation.repeat" class="dr-link">Animation.repeat</a> methods.
+						另请参考 <a href="#Animation.delay" class="dr-link">Animation.delay</a> and <a href="#Animation.repeat" class="dr-link">Animation.repeat</a> methods.
 					</p>
 					<p class="header">
 						参数
@@ -4992,7 +4989,7 @@ st.attr({fill: <i>"red"</i>}); <span class="c">// 改变集合内所有 circle �
 						</li>
 					</ul>
 					<p>
-						See also <a href="http://raphaeljs.com/easing.html">Easing demo</a>.
+						另请参考 <a href="http://raphaeljs.com/easing.html">Easing demo</a>.
 					</p>
 				</div>
 				<div class="Raphael-el-section">
@@ -6696,7 +6693,7 @@ paper.path(Raphael.fullfill(<i>"M{x},{y}h{dim.width}v{dim.height}h{dim['negative
 					<p>
 						You can add your own method to elements and sets. It is wise to add a set method for each element method
 						you added, so you will be able to call the same method on sets too.
-						See also <a href="#Raphael.el" class="dr-link">Raphael.el</a>.
+						另请参考 <a href="#Raphael.el" class="dr-link">Raphael.el</a>.
 					</p>
 					<p class="header">
 						用法
