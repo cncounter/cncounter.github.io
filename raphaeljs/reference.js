@@ -78,7 +78,7 @@ Raphael(function () {
     
     function prepare(id) {
         var div = document.getElementById(id);
-        div.style.cssText = "float:right;padding:10px;width:99px;height:99px;background:#2C53B0 url(http://raphaeljs.com/blueprint-min.png) no-repeat";
+        div.style.cssText = "float:right;padding:10px;width:99px;height:99px;background:#2C53B0 url(blueprint-min.png) no-repeat";
         return Raphael(div, 99, 99);
     }
     
