@@ -495,12 +495,18 @@
 					}
 					fontSize = 18;
 					textAnchor = "middle";
-				}
-				if(hideSmallZoom()){
+				} else if(hideSmallZoom()){
 					ty = y_s + h/2 + pad_top/3;
 					fontSize = 20;
 					if(lines > 1){
 						ty -= pad_top/2;
+					}
+				} else {
+					textMaxLen = 12 + 4;
+					if(text.length > textMaxLen){
+						lines = 2;
+					} else {
+						lines = 1;
 					}
 				}
 			}
@@ -536,6 +542,9 @@
 			}
 			
 			if(text.length > textMaxLen){
+				if(text.length > textMaxLen*2){
+					text = text.substr(0, textMaxLen*2 - 2) + "...";
+				}
 				text = text.substr(0, textMaxLen) + "\n" + text.substr(textMaxLen);
 				ty += pad_top/2;
 				lines = 2;
