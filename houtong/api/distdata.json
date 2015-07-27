@@ -1,0 +1,50 @@
+{
+	"info": "此数据请在后台生成",
+	"data": [
+		{
+			"id": "excellence"
+			,
+			"info": "卓越"
+			,
+			"color": "#6fdeee"
+			,
+			"value": 1
+		}
+		, {
+			"id": "good"
+			,
+			"info": "优秀"
+			,
+			"color": "#0f0e6e"
+			,
+			"value": 2
+		}
+		, {
+			"id": "well"
+			,
+			"info": "良好"
+			,
+			"color": "#ef0e6e"
+			,
+			"value": 8
+		}
+		, {
+			"id": "ok"
+			,
+			"info": "合格"
+			,
+			"color": "#efde6e"
+			,
+			"value": 2
+		}
+		, {
+			"id": "bad"
+			,
+			"info": "待改进"
+			,
+			"color": "#0f3e6e"
+			,
+			"value": 1
+		}
+	]
+}
