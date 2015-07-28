@@ -73,28 +73,22 @@ Raphael.fn.distributionPath = function(config) {
     	var allPoints = [];
     	allPoints.push(p0);
     	//
-    	allPoints = allPoints.concat(keyPoints);
+    	var kpoints = [].concat(keyPoints);
+	    for(var ki=0; ki < kpoints.length; ki++){
+	    	//
+	    	var kp = kpoints[ki];
+	    	//
+	    	kp.x = kp.x + x_pad;
+	    	//
+	    }
+    	
+    	
+    	allPoints = allPoints.concat(kpoints);
     	allPoints = allPoints.concat(vpoints);
     	//
     	allPoints.push(pn);
     	// 快速排序
     	allPoints = quickSort(allPoints);
-    	//
-    	function quickSort(arr) {
-		　　if (arr.length <= 1) { return arr; }
-		　　var pivotIndex = Math.floor(arr.length / 2);
-		　　var pivot = arr.splice(pivotIndex, 1)[0];
-		　　var left = [];
-		　　var right = [];
-		　　for (var i = 0; i < arr.length; i++){
-		　　　　if (arr[i].x < pivot.x) {
-		　　　　　　left.push(arr[i]);
-		　　　　} else {
-		　　　　　　right.push(arr[i]);
-		　　　　}
-		　　}
-		　　return quickSort(left).concat([pivot], quickSort(right));
-		};
     	
     	//
 	    var cp = [];
@@ -110,6 +104,8 @@ Raphael.fn.distributionPath = function(config) {
 	    	}
 	    	if(!ap.x && !ap.y){
 	    	} else {
+	    		
+	    		ap.y = Math.floor(ap.y);
 	    		newPoints.push(ap);
 	    	}
 	    }
@@ -132,7 +128,10 @@ Raphael.fn.distributionPath = function(config) {
 	    	var ay = height - ap.y + y;
 	    	//
 	    	if(0 == ai){
-	    		cp.push('M', ax, ay, 'S');
+	    		// https://developer.mozilla.org/zh-CN/docs/Web/SVG/Tutorial/Paths
+	    		//cp.push('M', ax, ay, 'S');
+	    		cp.push('M', ax, ay, 'T');
+	    		//cp.push('M', ax, ay, 'L');
 	    	} else {
 	    		cp.push(ax, ay);
 	    	}
@@ -145,6 +144,23 @@ Raphael.fn.distributionPath = function(config) {
 	    
     };
     //
+    
+	//
+	function quickSort(arr) {
+	　　if (arr.length <= 1) { return arr; }
+	　　var pivotIndex = Math.floor(arr.length / 2);
+	　　var pivot = arr.splice(pivotIndex, 1)[0];
+	　　var left = [];
+	　　var right = [];
+	　　for (var i = 0; i < arr.length; i++){
+	　　　　if (arr[i].x < pivot.x) {
+	　　　　　　left.push(arr[i]);
+	　　　　} else {
+	　　　　　　right.push(arr[i]);
+	　　　　}
+	　　}
+	　　return quickSort(left).concat([pivot], quickSort(right));
+	};
     
     //
     function generatePoints(){
@@ -264,7 +280,7 @@ Raphael.fn.distributionPath = function(config) {
     		//
     		var tx = (tp1.x + tp2.x)/2 + x_pad;
     		//
-    		var xy = ((tp1.x + tp2.x)/2 ) / ((tp1.x + tp2.x)/2 + x_pad/2);
+    		var xy = 1 || ((tp1.x + tp2.x)/2 ) / ((tp1.x + tp2.x)/2 + x_pad/2);
     		var ty = (tp1.y + tp2.y)/2 * (xy || 1);
     		//
     		var t = {
