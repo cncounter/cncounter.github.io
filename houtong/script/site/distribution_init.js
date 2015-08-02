@@ -7,18 +7,31 @@
 		_note_info : "默认配置信息,这堆配置信息,可以通过后台配置来覆盖",
 		dist_height : 300, // 正态分布图的高度
 		dist_width : 540,
-		showDistributionImage : showDistributionImage,
+		//showDistributionImage : showDistributionImage,
 		//
 		min_paper_width : 800,
 		min_paper_height : 600,
 		left_paper : 200, // 最左上角的 paper
 		top_paper : 80,
+		beforechange : function(tdata){
+			debug("beforechange:", tdata);
+			// 返回 true 则允许改变
+			return true;
+		}, 
+		onchange : function(ndata){
+    		// 回调函数
+    		if(!ndata){ return; }
+    		global.config.data = ndata;
+    		// 处理, 刷新
+			showDistributionImage();
+			// 执行其他操作
+			debug("onchange:", ndata);
+		},
 		distdata_json_url : 'api/distdata.json'
 	};
 	//
 	var global = {
 		paper : null
-		, data : null
 		, config : __config
 	};
 	window.global = global;

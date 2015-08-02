@@ -14,7 +14,7 @@ Raphael.fn.distributionPath = function(config) {
 	var ye = y + height;
 	//
 	var x_pad = 20;
-	var y_pad = 10;
+	var y_pad = 20;
 	//
 	var keyPoints = _fnCalcKeyPoints(data);
 	
@@ -26,6 +26,10 @@ Raphael.fn.distributionPath = function(config) {
     drawVerticalLine();
     // 画曲线
     drawNormalDistLine(); 
+    // 画比例
+    //drawPercentage(); 
+    // 画人数
+    //drawPersonNumber(); 
     
     // 画底部的一条横线, 这条线固定
     function drawBottomLine(){
@@ -50,7 +54,7 @@ Raphael.fn.distributionPath = function(config) {
     // 画曲线
     function drawNormalDistLine(){
 	    //
-	    var pps = generatePoints();
+	    var pps = [];//generatePoints();
     	//
     	var color = "hsb(.6, .75, .75)";
 	    // 画曲线
@@ -73,28 +77,22 @@ Raphael.fn.distributionPath = function(config) {
     	var allPoints = [];
     	allPoints.push(p0);
     	//
-    	allPoints = allPoints.concat(keyPoints);
+    	var kpoints = [].concat(keyPoints);
+	    for(var ki=0; ki < kpoints.length; ki++){
+	    	//
+	    	var kp = kpoints[ki];
+	    	//
+	    	kp.x = kp.x + x_pad;
+	    	//
+	    }
+    	
+    	
+    	allPoints = allPoints.concat(kpoints);
     	allPoints = allPoints.concat(vpoints);
     	//
     	allPoints.push(pn);
     	// 快速排序
     	allPoints = quickSort(allPoints);
-    	//
-    	function quickSort(arr) {
-		　　if (arr.length <= 1) { return arr; }
-		　　var pivotIndex = Math.floor(arr.length / 2);
-		　　var pivot = arr.splice(pivotIndex, 1)[0];
-		　　var left = [];
-		　　var right = [];
-		　　for (var i = 0; i < arr.length; i++){
-		　　　　if (arr[i].x < pivot.x) {
-		　　　　　　left.push(arr[i]);
-		　　　　} else {
-		　　　　　　right.push(arr[i]);
-		　　　　}
-		　　}
-		　　return quickSort(left).concat([pivot], quickSort(right));
-		};
     	
     	//
 	    var cp = [];
@@ -110,11 +108,12 @@ Raphael.fn.distributionPath = function(config) {
 	    	}
 	    	if(!ap.x && !ap.y){
 	    	} else {
+	    		
+	    		ap.y = Math.floor(ap.y);
 	    		newPoints.push(ap);
 	    	}
 	    }
 	    allPoints = newPoints;
-	    debug("allPoints:" , allPoints);
 	    //
     	
 	    // 根据关键点绘制贝塞尔曲线
@@ -132,7 +131,10 @@ Raphael.fn.distributionPath = function(config) {
 	    	var ay = height - ap.y + y;
 	    	//
 	    	if(0 == ai){
-	    		cp.push('M', ax, ay, 'S');
+	    		// https://developer.mozilla.org/zh-CN/docs/Web/SVG/Tutorial/Paths
+	    		//cp.push('M', ax, ay, 'S');
+	    		cp.push('M', ax, ay, 'T');
+	    		//cp.push('M', ax, ay, 'L');
 	    	} else {
 	    		cp.push(ax, ay);
 	    	}
@@ -145,6 +147,23 @@ Raphael.fn.distributionPath = function(config) {
 	    
     };
     //
+    
+	//
+	function quickSort(arr) {
+	　　if (arr.length <= 1) { return arr; }
+	　　var pivotIndex = Math.floor(arr.length / 2);
+	　　var pivot = arr.splice(pivotIndex, 1)[0];
+	　　var left = [];
+	　　var right = [];
+	　　for (var i = 0; i < arr.length; i++){
+	　　　　if (arr[i].x < pivot.x) {
+	　　　　　　left.push(arr[i]);
+	　　　　} else {
+	　　　　　　right.push(arr[i]);
+	　　　　}
+	　　}
+	　　return quickSort(left).concat([pivot], quickSort(right));
+	};
     
     //
     function generatePoints(){
@@ -264,7 +283,7 @@ Raphael.fn.distributionPath = function(config) {
     		//
     		var tx = (tp1.x + tp2.x)/2 + x_pad;
     		//
-    		var xy = ((tp1.x + tp2.x)/2 ) / ((tp1.x + tp2.x)/2 + x_pad/2);
+    		var xy = 1 || ((tp1.x + tp2.x)/2 ) / ((tp1.x + tp2.x)/2 + x_pad/2);
     		var ty = (tp1.y + tp2.y)/2 * (xy || 1);
     		//
     		var t = {
@@ -391,6 +410,7 @@ Raphael.fn.distributionPath = function(config) {
     	if(!datas || !datas.length){ return keyPoints;}
     	//
     	var sum = 0;
+    	var square_sum = 0;
 	    // 
 	    for(var i=0; i < datas.length; i++){
 	    	//
@@ -402,7 +422,9 @@ Raphael.fn.distributionPath = function(config) {
 			var value = d.value || 0;
 			// 计算总值
 			sum += value;
+			square_sum += value*value;
 	    }
+    	var sum_2 = sum*sum;
 	    
 	    // 
 	    for(var i=0; i < datas.length; i++){
@@ -418,6 +440,9 @@ Raphael.fn.distributionPath = function(config) {
 			//
 			var ylen = height * sz/100;
 			var xd = (width - 2 * x_pad) * (i + 0.5)/datas.length ; // i+半个
+			//if(square_sum * 2 < sum_2){
+				ylen = ylen * Math.sqrt(2);
+			//}
 			//
 			var kpoint = {
 				size : sz,
@@ -449,15 +474,8 @@ Raphael.fn.distributionPath = function(config) {
             	, height : barHeight
             	, data : data
             	, paper : paper
-            	, onchange : function(ndata){
-            		// 回调函数
-            		if(!ndata){
-            			return;
-            		}
-            		data = ndata;
-            		// 处理, 刷新
-            		config.showDistributionImage();
-          		}
+            	, onchange : config.onchange
+            	, beforechange : config.beforechange
         };
         var sbar = Raphael.sizebar(param);
 	};

@@ -33,7 +33,8 @@
 			backrect : null, // 背景rect
 			frontrect : null, // 前景rect, 在这个 rect 内部拖动
 			initcallchange : false, //是否触发初始回调
-			onchange : function(ndata) {}// 回调函数, 值改变时触发
+			onchange : function(ndata) {return true},// 回调函数, 值改变时触发
+			beforechange : function(tdata) {}// 回调函数, 值改变时触发
 		});
 		//
 		return new SizeBar(param);
@@ -269,7 +270,8 @@
 		
 		//
 		this.currentDataChange += change;
-		this.onchange && this.onchange(this.data);
+		// 
+		this.beforechange(this.data) && this.onchange(this.data);
 	};
 	
 	
