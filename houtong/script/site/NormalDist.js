@@ -29,7 +29,7 @@ Raphael.fn.distributionPath = function(config) {
     // 画比例
     //drawPercentage(); 
     // 画人数
-    //drawPersonNumber(); 
+    drawPersonNumber(); 
     
     // 画底部的一条横线, 这条线固定
     function drawBottomLine(){
@@ -150,19 +150,19 @@ Raphael.fn.distributionPath = function(config) {
     
 	//
 	function quickSort(arr) {
-	　　if (arr.length <= 1) { return arr; }
-	　　var pivotIndex = Math.floor(arr.length / 2);
-	　　var pivot = arr.splice(pivotIndex, 1)[0];
-	　　var left = [];
-	　　var right = [];
-	　　for (var i = 0; i < arr.length; i++){
-	　　　　if (arr[i].x < pivot.x) {
-	　　　　　　left.push(arr[i]);
-	　　　　} else {
-	　　　　　　right.push(arr[i]);
-	　　　　}
-	　　}
-	　　return quickSort(left).concat([pivot], quickSort(right));
+	  if (arr.length <= 1) { return arr; }
+	  var pivotIndex = Math.floor(arr.length / 2);
+	  var pivot = arr.splice(pivotIndex, 1)[0];
+	  var left = [];
+	  var right = [];
+	  for (var i = 0; i < arr.length; i++){
+	    if (arr[i].x < pivot.x) {
+	      left.push(arr[i]);
+	    } else {
+	      right.push(arr[i]);
+	    }
+	  }
+	  return quickSort(left).concat([pivot], quickSort(right));
 	};
     
     //
