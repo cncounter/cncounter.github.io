@@ -4,7 +4,7 @@
 Raphael.fn.distributionPath = function(config) {
 	
 	var paper = this;
-	var data = config.data || [];
+	var cdata = config.data || [];
 	
 	var height = config.dist_height || 300;
 	var width = config.dist_width || 540;
@@ -14,22 +14,33 @@ Raphael.fn.distributionPath = function(config) {
 	var ye = y + height;
 	//
 	var x_pad = 20;
-	var y_pad = 20;
+	var y_pad = 10;
 	//
-	var keyPoints = _fnCalcKeyPoints(data);
+	var keyPoints = [];
 	
-    // 绘制或更新底部的拖动标尺
-	loadSizeBar();
-    // 画底部的一条横线, 这条线固定
-    drawBottomLine();
-    // 画竖线
-    drawVerticalLine();
-    // 画曲线
-    drawNormalDistLine(); 
-    // 画比例
-    //drawPercentage(); 
-    // 画人数
-    drawPersonNumber(); 
+	//
+	refresh(cdata);
+	
+	// 
+	function refresh(data){
+		// 清空旧有的元素
+		paper.clear();
+		//
+		keyPoints = _fnCalcKeyPoints(data);
+	    // 画底部的一条横线, 这条线固定
+	    drawBottomLine();
+	    // 画竖线
+	    drawVerticalLine(data);
+	    // 画曲线
+	    drawNormalDistLine(data); 
+	    // 画比例
+	    drawPercentage(data); 
+	    // 画人数
+	    drawPersonNumber(data); 
+	    // 绘制或更新底部的拖动标尺
+		loadSizeBar(data);
+		
+	};
     
     // 画底部的一条横线, 这条线固定
     function drawBottomLine(){
@@ -38,8 +49,8 @@ Raphael.fn.distributionPath = function(config) {
     };
     
     // 画竖线
-    function drawVerticalLine(){
-	    var lls = generateLines();
+    function drawVerticalLine(data){
+	    var lls = generateVLines(data);
 	    var color = "#111" || Raphael.getColor();
 	    var line_width = 0.4;
 	    // 
@@ -51,8 +62,96 @@ Raphael.fn.distributionPath = function(config) {
 	    }
     };
     
+    function drawPercentage(data){
+    	//
+    	var len = data.length;
+    	//   每段的长
+    	var pw = (width - 2 * x_pad)/ len;
+    	// 总长
+    	var total = calTotal(data);
+    	//
+    	var fontsize = 12;
+    	//
+	    for(var i=0; i < len; i++){
+	    	//
+	    	var di = data[i];
+	    	var info = di["info"];
+	    	var value = di["value"];
+	    	//
+	    	var percent = calPercent(value, total);
+			var text = percent + "%";
+	    	//
+	    	var px =  x + x_pad + i * pw + pw/2;
+	    	var py = ye - fontsize/2 - 4;
+			//
+			var textEl = paper.text(px, py, text);
+			textEl.attr({
+				"font-size" : fontsize,
+				"cursor" : "default"
+			});
+			// 
+			unselect(textEl);
+	    }
+    };
+    function drawPersonNumber(data){
+    	//
+    	var len = data.length;
+    	//   每段的长
+    	var pw = (width - 2 * x_pad)/ len;
+    	// 总长
+    	var total = calTotal(data);
+    	//
+    	var fontsize = 12;
+    	//
+	    for(var i=0; i < len; i++){
+	    	//
+	    	var di = data[i];
+	    	var info = di["info"];
+	    	var value = di["value"];
+	    	//
+	    	var percent = calPercent(value, total);
+			var text = info + "(" + value + "人)";
+	    	//
+	    	var px =  x + x_pad + i * pw + pw/2;
+	    	var py = ye + fontsize*3/2 - 4;
+			//
+			var textEl = paper.text(px, py, text);
+			textEl.attr({
+				"font-size" : fontsize,
+				"cursor" : "default"
+			});
+			// 
+			unselect(textEl);
+	    }
+    };
+    
+    function unselect(textEl){
+			// 
+			var tstyle = textEl.node.style;
+			tstyle.unselectable = "on";
+			tstyle.MozUserSelect = "none";
+			tstyle.WebkitUserSelect = "none";
+    };
+    
+    function calPercent(value, total){
+    	//var percent = (100 * value/total).toFixed(1);
+    	var percent = Math.floor(100 * value/total);
+	    return percent;
+    };
+    function calTotal(data){
+    	var len = data.length;
+    	var total = 0;
+	    for(var i=0; i < len; i++){
+	    	//
+	    	var di = data[i];
+	    	var value = di["value"] || 0;
+	    	total += value;
+	    }
+	    return total;
+    };
+    
     // 画曲线
-    function drawNormalDistLine(){
+    function drawNormalDistLine(data){
 	    //
 	    var pps = [];//generatePoints();
     	//
@@ -64,7 +163,7 @@ Raphael.fn.distributionPath = function(config) {
 	        //var c = paper.path(ps).attr({stroke: color || Raphael.getColor(), "stroke-width": 4, "stroke-linecap": "round"});
 	    }
 	    //
-    	var vpoints = calVLinePoints();
+    	var vpoints = calVLinePoints(data);
     	var p0 = {
     		x : 0,
     		y : y_pad
@@ -115,6 +214,7 @@ Raphael.fn.distributionPath = function(config) {
 	    }
 	    allPoints = newPoints;
 	    //
+	    var path2Str = "";
     	
 	    // 根据关键点绘制贝塞尔曲线
 	    for(var ai = 0; ai < allPoints.length; ai++){ 
@@ -124,11 +224,19 @@ Raphael.fn.distributionPath = function(config) {
 	    		continue;
 	    	}
 	    	if(!ap.x && !ap.y){
-	    		//continue;
+	    		continue;
 	    	}
 	    	
 	    	var ax = ap.x + x;
 	    	var ay = height - ap.y + y;
+	    	//
+	    	if(allPoints.length -1 == ai){
+	    		debug(ax,ay);
+	    		//ay -= 2;
+	    		path2Str += "M"+ (ax -x_pad) + ","+ (ay -2);
+	    		path2Str += " S"+ (ax) + ","+ay + ","+ (ax+1) + ","+ (ay+1);
+	    		continue;
+	    	}
 	    	//
 	    	if(0 == ai){
 	    		// https://developer.mozilla.org/zh-CN/docs/Web/SVG/Tutorial/Paths
@@ -140,10 +248,14 @@ Raphael.fn.distributionPath = function(config) {
 	    	}
 	    	
 	    }
+	    // 补丁
+	    //cp.push(ax+10, ay);
     	
 	    //
 	    var path = paper.path(cp.join(','));
+	    var path2 = paper.path(path2Str);
 	    path.attr({stroke: color || Raphael.getColor(), "stroke-width": 3, "stroke-linecap": "round"});
+	    path2.attr({stroke: color || Raphael.getColor(), "stroke-width": 3, "stroke-linecap": "round"});
 	    
     };
     //
@@ -198,19 +310,11 @@ Raphael.fn.distributionPath = function(config) {
     	return distP;
     };
     //
-    function generateLines(){
+    function generateVLines(data){
     	
     	var lines = [];
-    	//
-    	var sum = data.length;
 		
-    	for(var i = 0; i <= sum; i++){
-    		//
-    		//var ll = calLine(i, sum);
-    		//
-    		// lines.push(ll);
-    	}
-    	var vps = calVLinePoints();
+    	var vps = calVLinePoints(data);
     	
     	for(var i = 0; i < vps.length; i++){
     		//
@@ -233,23 +337,9 @@ Raphael.fn.distributionPath = function(config) {
     	//
     	return lines;
     };
-    function calVLinePoints(){
+    function calVLinePoints(data){
     	
     	var vpoints = [];
-    	//
-    	var sum = data.length;
-		
-    	for(var i = 0; i <= sum; i++){
-    		//
-    		var pk1 = calPoint(i, sum);
-    		//
-    		pk1 = {
-    			x : pk1.x -x - x_pad,
-    			y : ye - y_pad - pk1.y
-    		};
-    		//
-    		//vpoints.push(pk1);
-    	}
     	//
     	var p0 = {
     		x : -2.5 * x_pad,
@@ -285,15 +375,23 @@ Raphael.fn.distributionPath = function(config) {
     		//
     		var xy = 1 || ((tp1.x + tp2.x)/2 ) / ((tp1.x + tp2.x)/2 + x_pad/2);
     		var ty = (tp1.y + tp2.y)/2 * (xy || 1);
+    		
+    		// 补丁-处理第一个点,最后一个点
+    		if(1 == i){
+    			ty = tp1.y +2;
+    		}
+    		if(tempPoints.length-1 == i){
+    			ty = tp2.y +2;
+    		}
     		//
     		var t = {
     			x : tx,
     			y : ty
     		};
     		//
-    		//
     		vpoints.push(t);
     	}
+    	//
     	//
     	return vpoints;
     };
@@ -435,14 +533,16 @@ Raphael.fn.distributionPath = function(config) {
 			var id = d.id;
 			var info = d.info;
 			var value = d.value || 0;
+			if(value < 1){
+				value = 1;
+			}
 			// 百分比
 			var sz = 100 * value / sum;
 			//
 			var ylen = height * sz/100;
-			var xd = (width - 2 * x_pad) * (i + 0.5)/datas.length ; // i+半个
-			//if(square_sum * 2 < sum_2){
 				ylen = ylen * Math.sqrt(2);
-			//}
+			var xd = (width - 2 * x_pad) * (i + 0.5)/datas.length ; // i+半个
+			
 			//
 			var kpoint = {
 				size : sz,
@@ -459,9 +559,9 @@ Raphael.fn.distributionPath = function(config) {
     };
     
     // 创建进度条
-	function loadSizeBar() {
+	function loadSizeBar(data) {
         //
-        var barMarginY = 50;
+        var barMarginY = 80;
         var barX = x;
         var barY = y + height + barMarginY;
         var barWidth = width ;
@@ -474,7 +574,12 @@ Raphael.fn.distributionPath = function(config) {
             	, height : barHeight
             	, data : data
             	, paper : paper
-            	, onchange : config.onchange
+            	, onchange : function(ndata){
+            		//
+            		config.onchange && config.onchange(ndata);
+            		//
+            		refresh(ndata);
+            	}
             	, beforechange : config.beforechange
         };
         var sbar = Raphael.sizebar(param);

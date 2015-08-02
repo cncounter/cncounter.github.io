@@ -23,7 +23,7 @@
     		if(!ndata){ return; }
     		global.config.data = ndata;
     		// 处理, 刷新
-			showDistributionImage();
+			//showDistributionImage();
 			// 执行其他操作
 			debug("onchange:", ndata);
 		},

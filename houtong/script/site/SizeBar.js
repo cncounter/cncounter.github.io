@@ -40,9 +40,9 @@
 		return new SizeBar(param);
 	};
 	// 构造函数
-	function SizeBar(param) {
+	function SizeBar(config) {
 		//
-		this._extends(param);
+		this._extends(config);
 		//
 		this.init();
 		// 处理显示
@@ -65,7 +65,15 @@
 			return this;
 		}
 		// 处理
-		this.data = data;
+		var data_n = [];
+		for(var j =0; j < data.length; j++){
+			var dn = data[j];
+			//
+			dn = _extends(dn, {});
+			data_n.push(dn);
+		}
+		//
+		this.data = data_n;
 		//
 		var weight = 0;
 		for(var i=0; i < data.length; i++){
