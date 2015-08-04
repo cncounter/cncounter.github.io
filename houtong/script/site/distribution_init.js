@@ -14,7 +14,7 @@
 		left_paper : 200, // 最左上角的 paper
 		top_paper : 80,
 		beforechange : function(tdata){
-			debug("beforechange:", tdata);
+			//debug("beforechange:", tdata);
 			// 返回 true 则允许改变
 			return true;
 		}, 
@@ -25,7 +25,7 @@
     		// 处理, 刷新
 			//showDistributionImage();
 			// 执行其他操作
-			debug("onchange:", ndata);
+			//debug("onchange:", ndata);
 		},
 		distdata_json_url : 'api/distdata.json'
 	};

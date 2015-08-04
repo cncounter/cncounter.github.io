@@ -22,19 +22,19 @@
 			opacityCSet : null,
 			cursorSet : null,
 			currentDataChange : 0,
+			margin : 15,
 			size : 300,
 			size2 : 32,
 			csize : 15,
 			csize2 : 40,
 			padding : 5,
 			radius : 3,
-			linewidth : 1,
 			clinew : 1, //线宽度
 			backrect : null, // 背景rect
 			frontrect : null, // 前景rect, 在这个 rect 内部拖动
 			initcallchange : false, //是否触发初始回调
-			onchange : function(ndata) {return true},// 回调函数, 值改变时触发
-			beforechange : function(tdata) {}// 回调函数, 值改变时触发
+			onchange : function(ndata) {},// 回调函数, 值改变时触发
+			beforechange : function(tdata) {return true;}// 回调函数, 值改变时触发
 		});
 		//
 		return new SizeBar(param);
@@ -78,7 +78,11 @@
 		var weight = 0;
 		for(var i=0; i < data.length; i++){
 			var d = data[i];
-			weight += d.value;
+			var value = d.value;
+			if(value < 0){
+				value = 0;
+			}
+			weight += value;
 		}
 		//
 		this.weight = weight;
@@ -86,8 +90,6 @@
 	
 	// 渲染
 	SizeBar.prototype.processRender = function (){
-		// 用在匿名函数内
-		var that = this;
 		//
 		this.drawRect();
 		this.drawCursor();
@@ -103,91 +105,102 @@
 		var bw = that.width;
 		var bh = that.height;
 		var weight = that.weight;
-		
 		// 画多个矩形
 		// 遍历 data
 		that.barSet = paper.set();
 		that.textSet = paper.set();
 		var dw = 0;
 		//
-		//
 		var data = that.data || [];
-		for(var i=0; i < data.length; i++){
+		//
+		var len = data.length;
+		//
+		for(var i=0; i < len; i++){
 			var d = data[i];
-			var value = d.value || 1;
+			var value = d.value || 0;
+			if(value < 0){
+				value = 0;
+			}
 			var color = d.color || Raphael.getColor();
 			var info = d.info || "";
 			var id = d.id || "";
 			//
-			var rw = (value / weight) * bw;
+			var margin = that.margin;
+			var psw = that.widthPerStage();
+			var rw = (value) * psw + margin;
 			var rh = bh;
 			var rx = bx + dw;
 			var ry = by;
-			// 矩形条
-			var rect = paper.rect(rx, ry, rw, rh);
-			rect.attr({
-				stroke : color
-				, fill : color
-				, r : 0
-			});
-			rect._id = id;
-			that.barSet.push(rect);
-			
-			// 文字
-			var tx = rx + rw /2;
-			var ty = ry - 10;
-			var radio = Math.round((value / weight) * 100); // 这个还有点问题,加起来不到100
-			var text = info + " " + radio.toFixed(0) + "%";
 			//
-			var textEl = paper.text(tx, ty, text);
-			that.textSet.push(textEl);
-			// 
-			var tstyle = textEl.node.style;
-			tstyle.unselectable = "on";
-			tstyle.MozUserSelect = "none";
-			tstyle.WebkitUserSelect = "none";
-			//
+			drawBackRect();
+			drawRatioText();
 			// 累加
 			dw += rw;
+			
+			function drawBackRect(){
+				// 矩形条
+				var rect = paper.rect(rx, ry, rw, rh);
+				rect.attr({
+					stroke : color
+					, fill : color
+					, r : 0
+				});
+				rect._id = id;
+				that.barSet.push(rect);
+			};
+			//
+			function drawRatioText(){
+				
+				// 文字
+				var tx = rx + rw /2;
+				var ty = ry - 10;
+				var ratio = Math.floor((value / weight) * 100); // 这个还有点问题,加起来不到100
+				var text = info + " " + ratio.toFixed(0) + "%";
+				//
+				var textEl = paper.text(tx, ty, text);
+				that.textSet.push(textEl);
+				// 
+				var tstyle = textEl.node.style;
+				tstyle.unselectable = "on";
+				tstyle.MozUserSelect = "none";
+				tstyle.WebkitUserSelect = "none";
+			};
 		}
 		//
 		that.textSet.attr({"text-anchor": "middle"}); // 改变集合内所有   fill 特性
 		
-		// 画顶层矩形
+		// 画顶层透明矩形
 		that.frontrect = paper.rect(bx, by, bw, bh);
 		that.frontrect.attr({
 			stroke : "#fff"
 			,fill : "#6fdeee" //"180-#fff-#000",// 设置颜色
-			,"stroke-width" : that.linewidth
+			,"stroke-width" : 1
 			, opacity : 0 // 透明
 		});
 		//
-		//that.frontrect.toFront();
+		that.frontrect.toFront();
 	};
 	// 绘制滑块
 	SizeBar.prototype.drawCursor =  function (){
 		var that = this;
 		var paper = that.paper;
-		//
-		var bh = that.height;
+		var color = "#ccc";
 		// 画多个滑块
-		
-		// 遍历
 		that.cursorSet = paper.set();
 		that.opacityCSet = paper.set(); //
 		//
 		var barSet = that.barSet || [];
-		for(var i=1; i < barSet.length; i++){ // 从1 开始,0的不画
+		// 遍历 // 从1 开始,0的不画, 共n-1 个
+		for(var i=1; i < barSet.length; i++){ 
 			var b = barSet[i];
-			var color = "#ccc";
 			var id = b._id || "";
 			//
 			var bbox = b.getBBox();
 			var bx = bbox.x;
 			var by = bbox.y;
 			//
-			var cw = bh + 4;
-			var ch = bh + 4;
+			var ch = that.height + 4;
+			var cw = ch;
 			var cx = bx - cw/2;
 			var cy = by - 2;
 			//
@@ -202,52 +215,187 @@
 			cursor._id = id;
 			that.cursorSet.push(cursor);
 			//
-			//
-			var cc = cursor.clone().attr({ // 透明滑块,用来拖加拖动事件
-                stroke : "#888",
-                opacity: 1,
-                "stroke-width": 1
-        	});
+			//// 透明滑块,用来拖加拖动事件
+			var cc = cursor.clone().attr({  opacity: 1 });
 			cc._id = id;
         	// 加到 
 			that.opacityCSet.push(cc);
 			// 使用闭包绑定事件
-			bindCCEvent(that, cc);
+			bindCursorEvent(that, cc);
 			
 		} // end for
-		
+		//
+		function bindCursorEvent(that, cc){
+			// 事件
+			cc.drag(function(dx, dy, _x, _y,e) {
+				// onmove
+				that.ccOnMove(cc, dx, dy, _x, _y);
+				return stopEvent(e);
+			}, function(e_x, e_y, e) { //onstart
+				that.ccOnMoving = true;
+				that.currentDataChange = 0;
+				//
+				return stopEvent(e);
+			}, function(e) { // onend
+				that.ccOnMoving = false;
+				that.ccOnMoveEnd(e);
+				//
+				return stopEvent(e);
+			});
+		};
 	};
 	
+	
+	SizeBar.prototype.ccOnMoveEnd = function(e) {
+		// 放开以后,根据data修正各个cursor的值
+		//
+		var that = this;
+		var data = this.data;
+		var weight = this.weight;
+		var bx = that.x;
+		var margin = that.margin;
+		var psw = that.widthPerStage();
+		//
+		var barSet = that.barSet ;
+		var textSet = that.textSet;
+		if(!data || !weight){
+			return;
+		}
+		if(!barSet || !textSet){
+			return;
+		}
+		//
+		var cursorSet = that.cursorSet ;
+		var opacityCSet = that.opacityCSet;
+		if(!cursorSet || !opacityCSet){
+			return;
+		}
+		//
+		// 遍历 data
+		var len = data.length;
+		var dw = 0;
+		//
+		for(var i=0; i < len; i++){
+			var d = data[i];
+			var value = d.value || 0;
+			if(value < 0){
+				value = 0;
+			}
+			var id = d.id || "";
+			//
+			var rw = (value) * psw + margin;
+			var rx = bx + dw;
+			//
+			barSet[i].attr({
+				x : rx,
+				width : rw
+			});
+			
+			var tx = rx + rw /2;
+			textSet[i].attr({
+				x: tx
+			});
+			//
+			// 累加
+			dw += rw;
+			//
+			var ch = that.height + 4;
+			var cw = ch;
+			var cx = rx - cw/2;
+			if(0 == i){
+				continue;
+			}
+			//
+			cursorSet[i-1] && cursorSet[i-1].attr({
+				x : cx
+			});
+			opacityCSet[i-1] && opacityCSet[i-1].attr({
+				x : cx
+			});
+		}
+	};
 	// 移动处理
 	// {dx: 从按下拖动时到此时的x值改变; dy: y改变; _x: }
 	SizeBar.prototype.ccOnMove = function(cc, dx, dy, _x, _y) {
-		if (this.ccOnMoving) {
+		var that = this;
+		//
+		if (that.ccOnMoving) {
+			// 
+			var nx = _x -  that.x - that.x/2;
+			nx = getNewXCoordinate(cc, nx);
 			//
-			var nx = _x -  this.x - this.x/2 + this.height;
-			
-			// 判断超出边界
-			if(nx < this.x){
-				nx = this.x;
-			}
-			var maxX = this.x + this.width;
-			if(nx > maxX){
-				nx = maxX;
-			}
-			// TODO 边界还需要处理前后范围
-			//
-			this.setCursor(cc, nx);
+			that.setCursor(cc, nx);
 			// 边动边改
-			this.processDataChange(cc, dx, nx); 
+			that.processDataChange(cc, dx, nx); 
 		
 		} else {
 			//
 		}
+		// 
+		function getNewXCoordinate(opacityCursor, newX){
+			var minX = that.x;
+			var maxX = that.x + that.width;
+			var margin = that.margin;
+			var psw = that.widthPerStage();
+			// 判断超出边界
+			if(newX < minX){
+				newX = minX;
+			}
+			if(newX > maxX){
+				newX = maxX;
+			}
+			//
+			var bbox = opacityCursor.getBBox();
+			var cWidth = bbox.width;
+			
+			// 判断Bar的相对位置
+			//
+			var id = opacityCursor._id;
+			var barSet = that.barSet;
+			var targetBar = searchById(barSet, id, "_id");
+			var targetBarIndex = searchIndexById(barSet, id, "_id");
+			// 左边的
+			var prevBar = barSet[targetBarIndex-1];
+			
+			//
+			var targetBBox = targetBar.getBBox();
+			var bxMax = targetBBox.x2;
+			// 捡一个半
+			//bxMax = bxMax - psw - cWidth*2/2;
+			bxMax = bxMax - margin - cWidth*2/2;
+			//
+			var bboxPre = prevBar.getBBox();
+			var bxMin = bboxPre.x;
+			// 减半个
+			bxMin = bxMin + margin ;//+ cWidth*1/2;
+			
+			// 判断超出边界
+			if(newX < bxMin){
+				newX = bxMin;
+			}
+			if(newX > bxMax){
+				newX = bxMax;
+			}
+			// TODO 还要处理向前向后借位的情况
+			//
+			return newX;
+		};
+	};
+	
+	// 设置 Cursor 的位置
+	SizeBar.prototype.setCursor = function(cc, nx) {
+		// 移动进度条的显示位置
+		cc.attr({ x : nx });
+		//
+		var id = cc._id;
+		var cursor = searchById(this.cursorSet, id , "_id");
+		cursor && cursor.attr({ x : nx});
 	};
 	
 	//
 	SizeBar.prototype.processDataChange = function(cc, dx, nx) {
 		// cc, cursor, rect, text, data
-		//
+		// 计算改变了几个
 		var change = (dx/this.width) * this.weight;
 		change = Math.round(change);
 		if(change == 0){
@@ -267,54 +415,63 @@
 		// 左边的
 		var prevBar = barSet[targetBarIndex-1];
 		
+		// 克隆数组
+		var data = cloneArray(this.data) || [];
 		//
-		var targetData = searchById(this.data, id, "id");
-		var targetDataIndex = searchIndexById(this.data, id, "id");
-		var prevData = this.data[targetDataIndex-1];
+		var targetData = searchById(data, id, "id");
+		var targetDataIndex = searchIndexById(data, id, "id");
+		var prevData = data[targetDataIndex-1];
 		
 		//
-		prevData && (prevData.value = prevData.value + change);
-		targetData && (targetData.value = targetData.value - change);
+		if(prevData){
+			var preV = prevData.value + change;
+		}
+		if(targetData){
+			var targetV = targetData.value - change;
+		}
+		if(preV < 0 || targetV < 0){
+			return;
+		} else if(preV > this.weight || targetV > this.weight){
+			return;
+		} 
+		//设置前一个的值，后一个的值
+		prevData && (prevData.value = preV);
+		targetData && (targetData.value = targetV);
+		//
 		
+		//  是否允许改变
+		var allow = this.beforechange(data);
 		//
-		this.currentDataChange += change;
-		// 
-		this.beforechange(this.data) && this.onchange(this.data);
-	};
-	
-	
-	// 设置 Bar条 的位置
-	SizeBar.prototype.setCursor = function(cc, nx) {
-		// 移动进度条的显示位置
-		cc.attr({
-			x : nx
-		});
-		//
-		var id = cc._id;
-		var cursor = searchById(this.cursorSet, id , "_id");
-		cursor && cursor.attr({ x : nx});
-	};
-	
-	//
-	function bindCCEvent(that, cc){
-		// 事件
-		cc.drag(function(dx, dy, _x, _y,e) {
-			// onmove
-			that.ccOnMove(cc, dx, dy, _x, _y);
-			return stopEvent(e);
-		}, function(e_x, e_y, e) { //onstart
-			that.ccOnMoving = true;
-			that.currentDataChange = 0;
+		if(false !== allow){
 			//
-			return stopEvent(e);
-		}, function(e) { // onend
-			that.ccOnMoving = false;
-			// 放开以后,刷新
-			return stopEvent(e);
-		});
+			this.currentDataChange += change;
+			this.data = data;
+			this.onchange(this.data);
+		};
+		
 	};
-	//
-	// 继承. 工具方法
+	
+	
+	// 每一段的长度
+	SizeBar.prototype.widthPerStage = function(){
+		var that = this;
+		var len = that.data.length;
+		var nl = len -0;
+		if(nl < 0){
+			nl= 0;
+		}
+		//
+		var margin = this.margin || 15;
+		//
+		var psw = (that.width - margin*nl) * 1 / (that.weight);// 空位
+		return psw;
+	};
+	
+	
+	//////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////
+	// 继承. 工具方法,obj1的属性复制到obj2
 	function _extends(obj1, obj2) {
 		//
 		if (!obj1) {
@@ -332,6 +489,29 @@
 		}
 		//
 		return obj2;
+	};
+	// 克隆一维数组. 工具方法
+	function cloneArray(arrays) {
+		//
+		var newArray = [];
+		//
+		if (!arrays || arrays.length<1) {
+			return newArray;
+		}
+		//
+		for (var i=0; i < arrays.length; i++) {
+			//
+			var ele = arrays[i];
+			//
+			if(!ele){
+				continue;
+			}
+			//
+			var newEle = _extends(ele, {});
+			newArray.push(newEle);
+		}
+		//
+		return newArray;
 	};
 	// 停止事件.
 	function stopEvent(e){

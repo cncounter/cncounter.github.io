@@ -231,7 +231,7 @@ Raphael.fn.distributionPath = function(config) {
 	    	var ay = height - ap.y + y;
 	    	//
 	    	if(allPoints.length -1 == ai){
-	    		debug(ax,ay);
+	    		//debug(ax,ay);
 	    		//ay -= 2;
 	    		path2Str += "M"+ (ax -x_pad) + ","+ (ay -2);
 	    		path2Str += " S"+ (ax) + ","+ay + ","+ (ax+1) + ","+ (ay+1);
@@ -538,11 +538,14 @@ Raphael.fn.distributionPath = function(config) {
 			}
 			// 百分比
 			var sz = 100 * value / sum;
+			if(sz > 80){
+				sz = 80;
+			}
 			//
 			var ylen = height * sz/100;
 				ylen = ylen * Math.sqrt(2);
 			var xd = (width - 2 * x_pad) * (i + 0.5)/datas.length ; // i+半个
-			
+			//
 			//
 			var kpoint = {
 				size : sz,
@@ -561,7 +564,7 @@ Raphael.fn.distributionPath = function(config) {
     // 创建进度条
 	function loadSizeBar(data) {
         //
-        var barMarginY = 80;
+        var barMarginY = 60;
         var barX = x;
         var barY = y + height + barMarginY;
         var barWidth = width ;
