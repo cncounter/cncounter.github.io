@@ -1153,11 +1153,32 @@
 			refreshDeptTree();
 		});
 		//
+		var preFullWH = null;
         $btn_fullscreen.click(function () {
             if ($.util.supportsFullScreen) {
                 if ($.util.isFullScreen()) {
                     $.util.cancelFullScreen();
+                    if(preFullWH){
+	                	var w = preFullWH.w;
+	                	var h = preFullWH.h;
+	                	//
+	                	$holder.width(w);
+	                	$holder.height(h);
+                    }
                 } else {
+                	//
+                	var $holder = $("#holder");
+                	var w_h = wh("holder");
+                	
+                	// 获取窗口宽高
+                	var w = $(window).width();
+                	var h = $(window).height();
+                	//
+                	$holder.width(w);
+                	$holder.height(h);
+                	// 暂存
+                	preFullWH = w_h;
+                	//
                     $.util.requestFullScreen("#holder");
                 }
             } else {
