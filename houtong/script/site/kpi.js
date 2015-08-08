@@ -1475,6 +1475,7 @@
 		
 		// 闭包内的函数
 		function hidePopUp(){
+			refreshPaperZoom();
 			$popup_saveimage_area.addClass("hide");
 		};
 		//
@@ -2014,10 +2015,13 @@ function saveSVGToPNG(imgId) {
 
 	var img = document.getElementById(imgId);
 	//
-	//load a svg snippet in the canvas
-	if(global && global.svg){
+	//load a svg snippet in the canvas//
+	var svg = global.svg;
+	var paper = global.paper;
+	if(svg){
+		paper && paper.setViewBox(0, 0,paper.width, paper.height, false);
 		// 修改了源码,将文本重复问题解决
-		canvg(canvas, global.svg.outerHTML);
+		canvg(canvas, svg.outerHTML);
 	}
 	//
 	//
