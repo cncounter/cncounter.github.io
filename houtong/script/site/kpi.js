@@ -920,6 +920,10 @@
 		var config = global.config;
 		var spanX = tree_with_xy.spanX + config.left_paper * 2.5;
 		var spanY = tree_with_xy.spanY + config.top_paper * 2.5;
+		// 计算最大的x,y
+		var maxXY = getMaxXY(tree_with_xy);
+		spanX = maxXY.x;
+		spanY = maxXY.y;
 		
 		if(config.paper_width < 1 || config.paper_height < 1){
 			config.paper_width = config.min_paper_width;
@@ -935,6 +939,35 @@
 			height = spanY;
 		}
 		paper.setSize(width, height);
+		
+		//
+		function getMaxXY(treenode){
+			var maxX = 0;
+			var maxY = 0;
+			setMaxXY(tree_with_xy);
+			return {
+				x : maxX + config.width_dept + config.left_paper, 
+				y : maxY + config.height_dept + config.top_paper
+			};
+			//
+			function setMaxXY(treenode){
+				if(!treenode){return;}
+				//
+				var x = treenode.x;
+				var y = treenode.y;
+				if(x > maxX){
+					maxX = x;
+				}
+				if(y > maxY){
+					maxY = y;
+				}
+				//
+				var subnodes = treenode.subnodes || [];
+				for(var i=0; i < subnodes.length; i++){
+					setMaxXY(subnodes[i]);
+				}
+			};
+		};
 	};
 	
 	// 校正位置

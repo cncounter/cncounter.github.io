@@ -111,11 +111,16 @@
 	// 自适应 paper 大小
 	function fitPaperSize(paper, tree_with_xy, expand_level){
 		// 设置paper的大小
-		var spanX = tree_with_xy.spanX + global.config.left_paper * 2.5;
-		var spanY = tree_with_xy.spanY + global.config.top_paper * 2.5;
+		var config = global.config;
+		var spanX = tree_with_xy.spanX + config.left_paper * 2.5;
+		var spanY = tree_with_xy.spanY + config.top_paper * 2.5;
+		// 计算最大的x,y
+		var maxXY = getMaxXY(tree_with_xy);
+		spanX = maxXY.x;
+		spanY = maxXY.y;
 		
-		var width = global.config.min_paper_width;
-		var height = global.config.min_paper_height;
+		var width = config.min_paper_width;
+		var height = config.min_paper_height;
 		// 比对最小限制
 		if(spanX > width){
 			width = spanX;
@@ -124,6 +129,35 @@
 			height = spanY;
 		}
 		paper.setSize(width, height);
+		
+		//
+		function getMaxXY(treenode){
+			var maxX = 0;
+			var maxY = 0;
+			setMaxXY(tree_with_xy);
+			return {
+				x : maxX + config.width_dept + config.left_paper, 
+				y : maxY + config.height_dept + config.top_paper
+			};
+			//
+			function setMaxXY(treenode){
+				if(!treenode){return;}
+				//
+				var x = treenode.x;
+				var y = treenode.y;
+				if(x > maxX){
+					maxX = x;
+				}
+				if(y > maxY){
+					maxY = y;
+				}
+				//
+				var subnodes = treenode.subnodes || [];
+				for(var i=0; i < subnodes.length; i++){
+					setMaxXY(subnodes[i]);
+				}
+			};
+		};
 	};
 	// 校正位置
 	function moveRootToCenter(paper, tree_with_xy){
