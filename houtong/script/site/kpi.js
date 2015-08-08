@@ -1330,13 +1330,15 @@
 		//
 		$export_image.click(function() {
 			//
-			var imgSrc = saveSVGToPNG("savedimg") ;
-			var fileName = "战略路径图_" + new Date().getTime();
-			//
-			$popup_saveimage_area.removeClass("hide");
-			//
-			$savedimg_anchor.attr("href", imgSrc);
-			$savedimg_anchor.attr("download", "" + fileName + ".png");
+			var imgSrc = saveSVGToPNG("savedimg", callback) ;
+			function callback(imgSrc){
+				var fileName = "战略路径图_" + new Date().getTime();
+				//
+				$popup_saveimage_area.removeClass("hide");
+				//
+				$savedimg_anchor.attr("href", imgSrc);
+				$savedimg_anchor.attr("download", "" + fileName + ".png");
+			};
 		});
 		
 		//
@@ -2009,7 +2011,7 @@ function iconcursor(element){
 
 
 // 将svg保存为png
-function saveSVGToPNG(imgId) {
+function saveSVGToPNG(imgId, callback) {
 	//
 	var canvas = document.getElementById("tempcanvas");
 
@@ -2018,21 +2020,30 @@ function saveSVGToPNG(imgId) {
 	//load a svg snippet in the canvas//
 	var svg = global.svg;
 	var paper = global.paper;
-	if(svg){
-		paper && paper.setViewBox(0, 0,paper.width, paper.height, false);
-		// 修改了源码,将文本重复问题解决
-		canvg(canvas, svg.outerHTML);
+	if(!svg){
+		return "";
 	}
-	//
-	//
-	var image = new Image();
-	image.src = canvas.toDataURL("image/png");
-	
-	//将canvas转成图片
-	var imgSrc = image.src;//canvas.toDataURL("image/png");
-	img.src = "";
-	img.src = imgSrc;
-	return imgSrc;
+	paper && paper.setViewBox(0, 0,paper.width, paper.height, false);
+	canvas.width = paper.width;
+	canvas.height = paper.height;
+	// 修改了源码,将文本重复问题解决
+	// 异步方法
+	canvg(canvas, svg.outerHTML, {
+        renderCallback : function(){
+            var imgData = canvas.toDataURL('image/jpg');
+			var image = new Image();
+            $(image).load(function(){
+                $("#drawing_area").html("");
+                $(img).appendTo("#drawing_area");
+            });
+            image.src = imgData;
+            //
+            img.src = imgData;
+            //
+            callback && callback(imgData);
+        }
+	});
+	return "";
 };
 
 
