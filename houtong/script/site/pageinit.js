@@ -1222,6 +1222,9 @@
                 	var w = $(window).width();
                 	var h = $(window).height();
                 	//
+                	w = window.screen.width;
+                	h = window.screen.height;
+                	//
                 	$holder.width(w);
                 	$holder.height(h);
                 	// 暂存

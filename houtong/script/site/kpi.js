@@ -360,11 +360,11 @@
 			var rect = paper.rect(x_s, y_s, w, h, r);
 			rect.datanode = node;
 			rect.attr({
-				fill : "#72d3da",
+				fill : '#38f',//"#72d3da",
 				stroke : color,
 				"fill-opacity" : 0.2,
 				"stroke-opacity" : 0.5,
-				"stroke-width" : 2
+				"stroke-width" : 0
 			});
 			node.rect = rect;
 		};
@@ -1387,6 +1387,9 @@
                 	// 获取窗口宽高
                 	var w = $(window).width();
                 	var h = $(window).height();
+                	//
+                	w = window.screen.width;
+                	h = window.screen.height;
                 	//
                 	$holder.width(w);
                 	$holder.height(h);

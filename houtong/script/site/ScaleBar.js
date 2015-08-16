@@ -4,7 +4,7 @@
 	// 采用包装模式, 将maxvalue等问题屏蔽在外.
 	
 	window.ScaleBar = ScaleBar;
-	var hasInited = false;
+	//var hasInited = false;
 	var _ScaleBar_Instance = null;
 
 function ScaleBar(config) {
@@ -34,7 +34,9 @@ function ScaleBar(config) {
 	};
 	//
 	this.config = config;
+	//
 	
+	var hasInited = $(this.config.element).data("hasInited")
 	//
 	if(hasInited){
 		this._ScaleBar = _ScaleBar_Instance;
@@ -54,6 +56,8 @@ function ScaleBar(config) {
 
 ScaleBar.prototype = {
 	init : function() {
+		
+		var hasInited = $(this.config.element).data("hasInited")
 		if(hasInited){
 			return;
 		}
