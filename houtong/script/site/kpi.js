@@ -1050,6 +1050,9 @@
 		if(!config.show_root){
 			// 修正一下位置
 			dx += global.config.width_dept;
+			if(tree_with_xy.subnodes && 1==tree_with_xy.subnodes.length){
+				dy -= 80;
+			};
 		}
 		//
 		var dxdy = {
@@ -1098,6 +1101,8 @@
 		//
 		var prevoffset = prevNodePositionInfo.prevoffset;
 		var dxdy = prevNodePositionInfo.dxdy;
+		var prevnode = prevNodePositionInfo.prevnode; // 之前的节点
+		var currentNode = currentExpNode(tree_with_xy, prevnode);
 		
 		//
 		var _dx = dxdy.dx;
@@ -1108,13 +1113,65 @@
 		// 取得点击加号以前的拖动偏移量
 		var _x = _ox - _dx;
 		var _y = _oy - _dy;
+		//
+		var oxoy = getOxOy(currentNode, prevnode);
+		_x += oxoy.x;
+		_y += oxoy.y;
 		
 		config.offset.y += _y;
-		config.offset.x += _x; 
+		config.offset.x += _x;
 		//
 		config.prevNodePositionInfo = null;
 		savePrevRootXY(tree_with_xy);
 		refreshPaperZoom();
+		
+		//
+		function getOxOy(curNode, preNode){
+			//
+			if(!curNode || !preNode){
+				return {
+					x : 0,
+					y : 0
+				};
+			}
+			//
+			var cx = curNode.x;
+			var cy = curNode.y;
+			var px = preNode.x;
+			var py = preNode.y;
+			//
+			return {
+				x : cx - px,
+				y : cy - py
+			}
+			
+		};
+		
+		function currentExpNode(treenode, prevnode){
+			
+			var previd = prevnode.id;
+			//
+			var currentNode = findCurrentNode(treenode);
+			
+			return currentNode;
+			//
+			function findCurrentNode(treenode){
+				if(!prevnode){return;}
+				//
+				var id = treenode.id;
+				if(id && id == previd){
+					return treenode;
+				}
+				//
+				var subnodes = treenode.subnodes || [];
+				for(var i=0; i < subnodes.length; i++){
+					var curnode = findCurrentNode(subnodes[i]);
+					if(null != curnode){
+						return curnode;
+					}
+				}
+			};
+		};
 		
 		return;
 		
