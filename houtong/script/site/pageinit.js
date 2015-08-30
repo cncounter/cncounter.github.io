@@ -1282,6 +1282,8 @@
             	//
             	$holder.width(w);
             	$holder.height(h);
+				global.config.min_paper_width = w;
+				global.config.min_paper_height = h;
             }
             //global.config.left_paper = 100;
             global.config.offset = {x: 0, y:0};
