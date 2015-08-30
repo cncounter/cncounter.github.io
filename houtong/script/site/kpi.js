@@ -114,6 +114,15 @@
 		
 		var width = global.config.min_paper_width;
 		var height = global.config.min_paper_height;
+		//
+		if(global.paper){
+			global.paper.clear();
+			if(global.svg){
+				$(global.svg).remove();
+			}
+		}
+		// 清空旧元素
+		$holder.empty();
 		// paper 画纸。
 		var paper = new Raphael(holder, width, height);
 		// 持有
@@ -1456,24 +1465,52 @@
                     $.util.requestFullScreen("#holder");
                     
                     //
-                    var paper = global.paper;
-                    // 获取全屏窗口的size
-                    //var w = $(window).width();
-                    //var h = $(window).height();
-                    //
-                    // 设置size
-                    //paper.setSize(w, h);
-                    //global.config.paper_width = w;
-                    //global.config.paper_height = h;
-                    // 全屏,还需要监听全屏退出事件
-                    //$("#holder").width(w).height(h);
-                    //paper.setSize(w,h);
-                    //refreshKPITree();
+                    global.config.left_paper = 300;
+                    refreshKPITree();
                 }
             } else {
                 $.easyui.messager.show("当前浏览器不支持全屏 API，请更换至最新的 Chrome/Firefox/Safari 浏览器或通过 F11 快捷键进行操作。");
             }
         });
+        //
+        $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(e) {
+			var isFullScreen= $.util.isFullScreen();
+			// 刚进入全屏
+			if(isFullScreen){
+				//
+				return;
+			} else {
+				// 退出全屏
+				handlerExitFullScreen();
+			}
+		});
+        //
+        function handlerExitFullScreen(){
+        	//
+        	if (false == $.util.supportsFullScreen) {
+        		return;
+            }
+            //
+        	//
+        	var isFullScreen= $.util.isFullScreen();
+			// 已进入全屏
+			if(isFullScreen){
+				//
+				return;
+			}
+			//
+            if(preFullWH){
+            	var w = preFullWH.w;
+            	var h = preFullWH.h;
+            	//
+            	$holder.width(w);
+            	$holder.height(h);
+            }
+            global.config.left_paper = 100;
+            global.config.prevRootXY = null;
+            //
+            refreshKPITree();
+        };
 		//
         $btn_deptshow.click(function (e) {
         	//

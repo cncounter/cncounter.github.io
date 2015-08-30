@@ -335,7 +335,7 @@
 		// 1. 绘制矩形框
 		var rect = paper.rect(x_s, y_s, w, h, r);
 		//
-		rect.dblclick(dbclickHandler);
+		//rect.dblclick(dbclickHandler);
 		rect.datanode = node;
 		
 		var color = Raphael.color(global.config.color);
@@ -460,7 +460,7 @@
 		var nameText = paper.text(tx, ty, text);
 		//var nameText = paper.print(x_s + w/2, y_s + pad, text, font, 30);
 		
-		nameText.dblclick(dbclickHandler);
+		nameText.click(dbclickHandler);// TODO 463
 		nameText.datanode = node;
 		nameText.attr({
 			"font-family": "microsoft yahei",
@@ -470,6 +470,7 @@
 			cursor : "default"
 		});
 		unselect(nameText);
+		iconcursor(nameText);
 		node.nameText = nameText;
 		
 		// 3. 绘制部门经理
@@ -502,7 +503,7 @@
 		if(20-global.config.zoom_num < global.config.zoom_num_dept){
 			
 			var linkText = paper.text(linkx, linky , linkinfo);
-			linkText.dblclick(dbclickHandler);
+			//linkText.dblclick(dbclickHandler);
 			linkText.datanode = node;
 			linkText.attr({
 				"font-family":"microsoft yahei"
@@ -854,7 +855,7 @@
 			if(children && children.length){
 				// 尝试显示自身为 root
 				//showDeptImage(jsnode);
-				return;
+				//return;
 			}
 		}
 		//
@@ -868,6 +869,7 @@
 			}
 		}
 		//
+		//alert("需要处理click事件");
 		
 	};
 	
@@ -1048,6 +1050,15 @@
 		
 		var width = global.config.min_paper_width;
 		var height = global.config.min_paper_height;
+		//
+		if(global.paper){
+			global.paper.clear();
+			if(global.svg){
+				$(global.svg).remove();
+			}
+		}
+		// 清空旧元素
+		$holder.empty();
 		// paper 画纸。
 		var paper = new Raphael(holder, width, height);
 		// 持有
@@ -1231,11 +1242,53 @@
                 	preFullWH = w_h;
                 	//
                     $.util.requestFullScreen("#holder");
+                    //
+                    refreshDeptTree();
                 }
             } else {
                 $.easyui.messager.show("当前浏览器不支持全屏 API，请更换至最新的 Chrome/Firefox/Safari 浏览器或通过 F11 快捷键进行操作。");
             }
         });
+        //
+        $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(e) {
+			var isFullScreen= $.util.isFullScreen();
+			// 刚进入全屏
+			if(isFullScreen){
+				//
+				return;
+			} else {
+				// 退出全屏
+				handlerExitFullScreen();
+			}
+		});
+        //
+        function handlerExitFullScreen(){
+        	//
+        	if (false == $.util.supportsFullScreen) {
+        		return;
+            }
+            //
+        	//
+        	var isFullScreen= $.util.isFullScreen();
+			// 已进入全屏
+			if(isFullScreen){
+				//
+				return;
+			}
+			//
+            if(preFullWH){
+            	var w = preFullWH.w;
+            	var h = preFullWH.h;
+            	//
+            	$holder.width(w);
+            	$holder.height(h);
+            }
+            //global.config.left_paper = 100;
+            global.config.offset = {x: 0, y:0};
+            global.config.prevRootXY = null;
+            //
+            refreshDeptTree();
+        };
 		// 
         $btn_deptshow.click(function (e) {
         	//
