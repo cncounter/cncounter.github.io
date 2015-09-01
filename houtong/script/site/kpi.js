@@ -478,7 +478,7 @@
 		function _drawTitletext(){
 			// 计算title节点的x,y
 			var tx = x_s + pad;
-			var ty = y_s + pad_line + pad_top/2 + 4;;
+			var ty = y_s + pad_line + pad_top/2 + 4;
 			
 			var text = node.name || node.text || "";
 
@@ -530,14 +530,14 @@
 					if(lines > 1){
 						ty -= pad_top/2;
 					}
-					fontSize = 20;
+					fontSize = 18;
 					textAnchor = "middle";
 					textMaxLen = 12;
 				}
 				if(hideSmallZoom()){
 					ty = y_s + h/2;
 					textMaxLen = 12;
-					fontSize = 24;
+					fontSize = 18;
 				}
 			}
 			
@@ -934,10 +934,10 @@
 		spanX = maxXY.x;
 		spanY = maxXY.y;
 		
-		if(config.paper_width < 1 || config.paper_height < 1){
+		//if(config.paper_width < 1 || config.paper_height < 1){
 			config.paper_width = config.min_paper_width;
 			config.paper_height = config.min_paper_height;
-		}
+		//}
 		var width = config.paper_width;
 		var height = config.paper_height;
 		// 比对最小限制
@@ -1459,6 +1459,8 @@
                 	//
                 	$holder.width(w);
                 	$holder.height(h);
+					global.config.min_paper_width = w;
+					global.config.min_paper_height = h;
                 	// 暂存
                 	preFullWH = w_h;
                 	//
@@ -1507,7 +1509,7 @@
             	$holder.height(h);
             }
             global.config.left_paper = 100;
-            global.config.prevRootXY = null;
+            //global.config.prevRootXY = null;
             //
             refreshKPITree();
         };
