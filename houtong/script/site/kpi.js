@@ -1148,6 +1148,21 @@
 			var cy = curNode.y;
 			var px = preNode.x;
 			var py = preNode.y;
+			// 这里有点复杂,是用于控制当首个元素太靠上面的时候引起的BUG
+			// 展开/缩放元素时
+			var jsnode = curNode.jsnode || {};
+			//
+			if(py < config.height_dept){
+				if(!jsnode.fixed){
+					py = cy;
+					jsnode.forceSet = true;
+				}
+			} else  if(cy < config.height_dept && jsnode.forceSet){
+				jsnode.forceSet = false;
+				py = py + (cy - py);
+			} else {
+				jsnode.fixed = true;
+			}
 			//
 			return {
 				x : cx - px,
