@@ -694,9 +694,10 @@ Raphael.fn.connectElement = function(pnode, snode, config, bgColor) {
 			}),
 			linePath : this.path(path).attr({
 				stroke : color,
-				fill : "none"
-				,"stroke-width": 2, "stroke-linecap": "round"
-				, "arrow-end" : "classic-wide-long"
+				fill : "none",
+				"stroke-width": 6,
+				"stroke-linecap": "square",
+				"arrow-end" : "block-midium-midium"
 			}),
 			from : pnode,
 			to : snode
