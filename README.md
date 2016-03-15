@@ -1,2 +1,6 @@
 # cncounter.github.io
-天朝计数器
+CN计数器
+
+
+CNC is not a counter!
+
